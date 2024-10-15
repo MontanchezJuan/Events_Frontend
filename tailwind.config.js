@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
+  content: ["./src/**/*.{html,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        md: "780px",
+        // => @media (min-width: 780px) { ... }
+      },
+    },
   },
   plugins: [],
   darkMode: "class",
