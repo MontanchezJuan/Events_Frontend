@@ -7,6 +7,7 @@ import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 
+
 const schema = yup
   .object({
     email: yup

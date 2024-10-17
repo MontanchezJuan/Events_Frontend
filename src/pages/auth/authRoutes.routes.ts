@@ -6,7 +6,8 @@ export enum AUTH_ROUTES {
   
   LOGIN = "/login",
   SIGNUP = "/signup",
-  RECOVERPASS="/recoverpass"
+  RECOVERPASS="/recoverpass",
+  RESTOREPASS="/restorepass"
 }
 
 export const authRoutes: Route[] = [
@@ -25,6 +26,12 @@ export const authRoutes: Route[] = [
   {
     component: lazy(() => import("./RecoverPassPage")),
     path: AUTH_ROUTES.RECOVERPASS,
+    protected: false,
+    layout: LAYOUTS.MAINLAYOUT,
+  },
+  {
+    component: lazy(() => import("./RestorePassPage")),
+    path: AUTH_ROUTES.RESTOREPASS,
     protected: false,
     layout: LAYOUTS.MAINLAYOUT,
   },

@@ -7,6 +7,8 @@ import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 import { FormField } from "../../../interfaces/Form.interfaces";
+import { useNavigate } from "react-router-dom";
+import { AUTH_ROUTES } from "../../../pages/auth/authRoutes.routes";
 
 
 type FormData = yup.InferType<typeof schema>;
@@ -21,10 +23,16 @@ export const ForgotPasswordForm: React.FC = () => {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log('Recuperar contraseña para:', data.email);
-    // Lógica para manejar la recuperación de la contraseña
+  const navigate = useNavigate();
+
+
+  const onSubmit = (data: FormData) => {
+    alert("Estamos trabajando en el backend para que pueda restaurar su contrasena con el correo: "+ data.email);
+    navigate(AUTH_ROUTES.RESTOREPASS);
   };
+  
+  
+
 
   const formFields: FormField[] = [
     {
@@ -36,7 +44,7 @@ export const ForgotPasswordForm: React.FC = () => {
   ];
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <Form  onSubmit={handleSubmit(onSubmit) } className="space-y-4">
        {formFields.map((field) => (
         <div key={field.name}>
           <Input
@@ -49,7 +57,7 @@ export const ForgotPasswordForm: React.FC = () => {
         </div>
       ))}
       
-      <ButtonWhite type="submit" forForm>
+      <ButtonWhite type="submit"  forForm>
         Recuperar contraseña
       </ButtonWhite>
       <ButtonWhite type="button" onClick={() => window.history.back()} className="w-full border">
