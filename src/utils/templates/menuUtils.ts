@@ -1,7 +1,7 @@
 import { LiaAdSolid } from "react-icons/lia";
 import { MdHomeFilled } from "react-icons/md";
 import { Item } from "../../components/molecules/templates/MenuItems";
-import { COMMON_ROUTES } from "../../pages/common/common.routes";
+import { COMMON_ROUTES } from "../../routes/common.routes";
 
 export const getMenuItemsByRole = (role: string): Item[] => {
   const commonItems = [

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import MainLayout from "./components/templates/MainLayout";
+import NotFoundPage from "./pages/common/NotFoundPage";
 import { ROUTES as PAGES } from "./routes";
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -11,24 +11,20 @@ function App() {
       <Suspense fallback={<div>Cargando...</div>}>
         <Routes>
           {PAGES.map((page) => {
-            const Layout = page.layout || MainLayout;
             return (
-              <Route key={page.path} element={<Layout />}>
+              <Route key={page.path} element={<page.layout />}>
                 <Route
                   path={page.path}
                   element={
-                    page.protected ? (
-                      <PrivateRoute requiredRole={page.requiredRole}>
-                        <page.component />
-                      </PrivateRoute>
-                    ) : (
+                    <PrivateRoute requiredRoles={page.requiredRoles}>
                       <page.component />
-                    )
+                    </PrivateRoute>
                   }
                 />
               </Route>
             );
           })}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
