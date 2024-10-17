@@ -614,6 +614,10 @@ video {
   display: none;
 }
 
+.h-1\/2 {
+  height: 50%;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -634,6 +638,10 @@ video {
   min-height: calc(100vh - 60px);
 }
 
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .w-\[240px\] {
   width: 240px;
 }
@@ -652,6 +660,14 @@ video {
 
 .max-w-\[1128px\] {
   max-width: 1128px;
+}
+
+.max-w-screen-lg {
+  max-width: 1024px;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }
 
 .grow {
@@ -684,6 +700,10 @@ video {
   justify-content: center;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .gap-1 {
   gap: 0.25rem;
 }
@@ -702,6 +722,12 @@ video {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .rounded {
@@ -738,6 +764,16 @@ video {
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
 .bg-transparent {
   background-color: transparent;
 }
@@ -752,8 +788,20 @@ video {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
 
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
 }
 
 .px-2 {
@@ -789,6 +837,11 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .pl-4 {
@@ -832,6 +885,10 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .text-black {
@@ -930,6 +987,11 @@ video {
 .after\:content-\[\'\'\]::after {
   --tw-content: '';
   content: var(--tw-content);
+}
+
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
 .hover\:after\:origin-left:hover::after {
