@@ -3,8 +3,10 @@ import { LAYOUTS } from "../../components/templates/Layouts.routes";
 import { Route } from "../../routes";
 
 export enum AUTH_ROUTES {
+  
   LOGIN = "/login",
   SIGNUP = "/signup",
+  RECOVERPASS="/recoverpass"
 }
 
 export const authRoutes: Route[] = [
@@ -17,6 +19,12 @@ export const authRoutes: Route[] = [
   {
     component: lazy(() => import("./SingupPage")),
     path: AUTH_ROUTES.SIGNUP,
+    protected: false,
+    layout: LAYOUTS.MAINLAYOUT,
+  },
+  {
+    component: lazy(() => import("./RecoverPassPage")),
+    path: AUTH_ROUTES.RECOVERPASS,
     protected: false,
     layout: LAYOUTS.MAINLAYOUT,
   },
