@@ -3,26 +3,20 @@ import { Role } from "../store/createUserSlice";
 import useStore from "../store/useStore";
 
 interface PrivateRouteProps {
-  children: React.ReactElement; // Asegúrate de que sea un ReactElement
-  requiredRole?: Role | Role[]; // Puede ser un rol único o un array de roles
+  children: React.ReactNode;
+  requiredRoles: Role[];
 }
 
-const PrivateRoute = ({ children, requiredRole }: PrivateRouteProps) => {
-  const user = useStore((state) => state.user);
+const PrivateRoute = ({ children, requiredRoles }: PrivateRouteProps) => {
+  const { role } = useStore((state) => state.user);
 
-  // Verifica si el usuario tiene permiso
-  const hasPermission =
-    !requiredRole ||
-    (Array.isArray(requiredRole)
-      ? requiredRole.includes(user.role)
-      : user.role === requiredRole);
-
-  // Redirigir si no tiene permiso
-  if (!hasPermission) {
-    return <Navigate to="/login" />;
+  // Si el rol del usuario no está en los roles permitidos, redirigir a una página de error o principal
+  if (!requiredRoles.includes(role)) {
+    return <Navigate to="/" />; // O una página de "No Autorizado"
   }
 
-  return children; // Renderiza el componente si tiene permiso
+  // Si está autenticado y tiene permisos, renderizar el componente hijo
+  return <>{children}</>;
 };
 
 export default PrivateRoute;

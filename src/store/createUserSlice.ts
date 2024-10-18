@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 
-export type Role = "admin" | "organo" | "user" | "not-user";
+export type Role = "admin" | "organizer" | "user" | "not-user";
 
 interface User {
   role: Role;

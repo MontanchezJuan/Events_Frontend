@@ -8,7 +8,7 @@ import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 import { FormField } from "../../../interfaces/Form.interfaces";
 import { useNavigate } from "react-router-dom";
-import { AUTH_ROUTES } from "../../../pages/auth/authRoutes.routes";
+import { AUTH_ROUTES } from "../../../routes/authRoutes.routes";
 
 
 type FormData = yup.InferType<typeof schema>;

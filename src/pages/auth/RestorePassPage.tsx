@@ -1,5 +1,4 @@
 import { UnderlineText } from "../../components/atoms/common/UnderlineText";
-import { ForgotPasswordForm } from "../../components/molecules/forms/ForgotPasswordForm";
 import { RestorePasswordForm } from "../../components/molecules/forms/RestorePasswordForm";
 
 const RecoverPassPage = () => {

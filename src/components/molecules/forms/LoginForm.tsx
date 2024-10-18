@@ -7,7 +7,7 @@ import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 import { TextLink } from "../../atoms/common/TextLink";
-import { AUTH_ROUTES } from "../../../pages/auth/authRoutes.routes";
+import { AUTH_ROUTES } from "../../../routes/authRoutes.routes";
 import { useNavigate } from "react-router-dom";
 
 
