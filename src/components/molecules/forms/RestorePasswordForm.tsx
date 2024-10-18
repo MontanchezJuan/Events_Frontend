@@ -1,6 +1,5 @@
-import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { ButtonWhite } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
