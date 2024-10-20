@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { lazy } from "react";
 
-export const LAYOUTS: { [key: string]: React.ElementType<any> } = {
+export const LAYOUTS = {
   MAINLAYOUT: lazy(() => import("./MainLayout")),
 };
 

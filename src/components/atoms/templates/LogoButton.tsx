@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { COMMON_ROUTES } from "../../../pages/common/common.routes";
+import { COMMON_ROUTES } from "../../../routes/common.routes";
 
 export const LogoButton = () => {
   const navigate = useNavigate();

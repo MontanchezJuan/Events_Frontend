@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { AUTH_ROUTES } from "../../../pages/auth/authRoutes.routes";
+import { AUTH_ROUTES } from "../../../routes/authRoutes.routes";
 import { ButtonBorderWhite, ButtonWhite } from "../../atoms/common/Button";
 import { AccountNavItem } from "./Account.NavItem";
 
