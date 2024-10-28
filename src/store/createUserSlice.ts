@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 
-export type Role = "admin" | "organizer" | "user" | "not-user";
+export type Role = "admin" | "organizer" | "user" | "unauthenticated";
 
 interface User {
   role: Role;
@@ -12,7 +12,7 @@ export interface UserSlice {
 }
 
 const createUserSlice: StateCreator<UserSlice> = (set) => ({
-  user: { role: "not-user" },
+  user: { role: "unauthenticated" },
 
   setRole: (newRole: Role) =>
     set((state) => {

@@ -1,14 +1,17 @@
-import { Outlet } from "react-router-dom";
 import { Header } from "../organisms/Header";
 
-const MainLayout = () => {
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
+
+const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <>
       <Header />
 
       <div className="flex justify-center">
         <section className="w-full md:w-[720px] lg:w-[1200px]">
-          <Outlet />
+          {children}
         </section>
       </div>
     </>

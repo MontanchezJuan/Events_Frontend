@@ -1,20 +1,16 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { COMMON_ROUTES } from "../../../routes/common.routes";
+import { Link } from "react-router-dom";
 
-export const LogoButton = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface LogoButtonProps {
+  color: "text-zinc-900 dark:text-white" | "text-white dark:text-zinc-900";
+}
 
+export const LogoButton = ({ color }: LogoButtonProps) => {
   return (
-    <button
-      className="cursor-pointer select-none text-2xl"
-      onClick={() => {
-        if (location.pathname !== COMMON_ROUTES.LANDING) {
-          navigate(COMMON_ROUTES.LANDING);
-        }
-      }}
+    <Link
+      to="/"
+      className={`${color} cursor-pointer select-none text-2xl font-extrabold`}
     >
       Uboleta
-    </button>
+    </Link>
   );
 };

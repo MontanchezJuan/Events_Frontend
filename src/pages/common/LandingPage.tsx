@@ -1,5 +1,7 @@
+import MainLayout from "../../components/templates/MainLayout";
+
 const LandingPage = () => {
-  return <div>Landing</div>;
+  return <MainLayout>Landing</MainLayout>;
 };
 
 export default LandingPage;
