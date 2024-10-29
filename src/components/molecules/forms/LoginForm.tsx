@@ -7,7 +7,7 @@ import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 import { TextLink } from "../../atoms/common/TextLink";
-import { AUTH_ROUTES } from "../../../routes/authRoutes.routes";
+import { PUBLICROUTES } from "../../../routes/Public.routes";
 import { useNavigate } from "react-router-dom";
 
 
@@ -74,7 +74,7 @@ export const LoginForm = () => {
       <ButtonWhite type="submit" forForm>
         Iniciar sesión
       </ButtonWhite>
-      <TextLink onClick={()=>handleClick(AUTH_ROUTES.RECOVERPASS)}>¿Olvidaste tu contraseña?</TextLink>
+      <TextLink onClick={()=>handleClick(PUBLICROUTES.RECOVERPASS)}>¿Olvidaste tu contraseña?</TextLink>
     </Form>
   );
 };

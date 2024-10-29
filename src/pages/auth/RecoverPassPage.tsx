@@ -4,9 +4,8 @@ import { ForgotPasswordForm } from "../../components/molecules/forms/ForgotPassw
 const RecoverPassPage = () => {
   return (
     <main className="flex min-h-[calc(100vh_-_60px)] w-full flex-col items-center justify-center gap-4">
-      <UnderlineText color="after:bg-white" size="2xl">
-       Recuperar<br />Contraseña
-      </UnderlineText>
+      <UnderlineText text="Recuperar" color="after:bg-white" size="2xl"></UnderlineText>
+      <UnderlineText text="contraseña" color="after:bg-white" size="2xl"></UnderlineText>
 
       <ForgotPasswordForm />
     </main>

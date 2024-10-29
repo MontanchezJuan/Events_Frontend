@@ -58,7 +58,7 @@ export const RestorePasswordForm = () => {
   ];
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit) } className="space-y-4">
+    <Form onSubmit={handleSubmit(onSubmit) }>
        {formFields.map((field) => (
         <div key={field.name}>
           <Input

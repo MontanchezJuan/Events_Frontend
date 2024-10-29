@@ -8,7 +8,7 @@ import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 import { FormField } from "../../../interfaces/Form.interfaces";
 import { useNavigate } from "react-router-dom";
-import { AUTH_ROUTES } from "../../../routes/authRoutes.routes";
+import { PUBLICROUTES } from "../../../routes/Public.routes";
 
 
 type FormData = yup.InferType<typeof schema>;
@@ -28,7 +28,7 @@ export const ForgotPasswordForm: React.FC = () => {
 
   const onSubmit = (data: FormData) => {
     alert("Estamos trabajando en el backend para que pueda restaurar su contrasena con el correo: "+ data.email);
-    navigate(AUTH_ROUTES.RESTOREPASS);
+    navigate(PUBLICROUTES.RESTOREPASS);
   };
   
   
@@ -44,7 +44,7 @@ export const ForgotPasswordForm: React.FC = () => {
   ];
 
   return (
-    <Form  onSubmit={handleSubmit(onSubmit) } className="space-y-4">
+    <Form  onSubmit={handleSubmit(onSubmit) }>
        {formFields.map((field) => (
         <div key={field.name}>
           <Input
