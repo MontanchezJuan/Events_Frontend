@@ -28,10 +28,9 @@ export const AccountNavItem = () => {
           className="flex items-center gap-1"
           color="after:bg-zinc-900"
           onClick={handleLogoutClick}
-        >
-          <MdLogout />
-          Cerrar Sesión
-        </UnderlineText>
+          text="Cerrar Sesión"
+          icon={<MdLogout />}
+        />
       </div>
 
       <ProfileButton

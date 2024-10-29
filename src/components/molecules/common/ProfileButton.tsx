@@ -14,7 +14,7 @@ export const ProfileButton = ({
       className="rounded-full"
       width={28}
       height={28}
-      src="https://media.licdn.com/dms/image/v2/D4E35AQFX6xRNnV9noQ/profile-framedphoto-shrink_100_100/profile-framedphoto-shrink_100_100/0/1676948006086?e=1729440000&v=beta&t=vJT-IlXKnIKrY4uRZyHVbTKLtfH9U8FjtTdIUsl747o"
+      src="https://ritmo95.sbs.co/wp-content/uploads/sites/4/2018/09/Ozuna-090518.jpg"
       alt="juan"
     />
     <span>Cuenta</span>
