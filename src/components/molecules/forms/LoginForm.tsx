@@ -6,6 +6,13 @@ import { ButtonWhite } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
+import { TextLink } from "../../atoms/common/TextLink";
+import { PUBLICROUTES } from "../../../routes/Public.routes";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 const schema = yup
   .object({
@@ -26,6 +33,12 @@ export const LoginForm = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+  const navigate = useNavigate();
+
+  const handleClick = (to: string) => {
+    navigate(to);
+  };
 
   const onSubmit = (data: FormData) => alert(data);
 
@@ -61,6 +74,7 @@ export const LoginForm = () => {
       <ButtonWhite type="submit" forForm>
         Iniciar sesión
       </ButtonWhite>
+      <TextLink onClick={()=>handleClick(PUBLICROUTES.RECOVERPASS)}>¿Olvidaste tu contraseña?</TextLink>
     </Form>
   );
 };

@@ -1,0 +1,29 @@
+[33mcommit 53e5facd1ec65119e8d742a6e9e69b70f18dd594[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/myBranch[m[33m, [m[1;32mmyBranch[m[33m)[m
+Author: Stokker <stokkerma@gmail.com>
+Date:   Fri Oct 18 15:11:18 2024 -0500
+
+    Fix import issue
+
+[33mcommit 0c3f51b9c9908d8602019a7aa96e5fa5674a4bfc[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Stokker <stokkerma@gmail.com>
+Date:   Thu Oct 17 17:26:25 2024 -0500
+
+    Finished 'Forgot Password' Frontend
+
+[33mcommit 4b6aaa16d923e563313423c87b31e393b06b1b00[m
+Author: Stokker <stokkerma@gmail.com>
+Date:   Wed Oct 16 20:57:54 2024 -0500
+
+    forgot password and recover password frontend
+
+[33mcommit 9bfc36f75f862e381a735482f8e7d97c1f7b2961[m[33m ([m[1;31mupstream/main[m[33m, [m[1;31mupstream/HEAD[m[33m)[m
+Author: MontanchezJuan <juanfelipemontanchez@gmail.com>
+Date:   Mon Oct 14 22:29:14 2024 -0500
+
+    inital components, architecture and routes
+
+[33mcommit 574143aab47534c3931a8c4a3880191397da72fa[m
+Author: MontanchezJuan <juanfelipemontanchez@gmail.com>
+Date:   Sat Oct 12 14:53:05 2024 -0500
+
+    project initiated
