@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { Role } from "../store/createUserSlice";
+import { RoleName } from "../api/interfaces/user";
 import useStore from "../store/useStore";
 
 interface PrivateRouteProps {
-  requiredRole: Role;
+  requiredRole: RoleName;
 }
 
 const PrivateRoute = ({ requiredRole }: PrivateRouteProps) => {
-  const { role } = useStore((state) => state.user);
+  const { name: role } = useStore((store) => store.user.role);
 
   // Check if the user's role is equal to the allowed role
   const hasAccess = requiredRole === role;

@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { login } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
 import { ButtonWhite } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
@@ -16,18 +17,19 @@ const schema = yup
     password: yup.string().required("La contraseña es obligatoria."),
   })
   .required();
-type FormData = yup.InferType<typeof schema>;
+export type LoginFormData = yup.InferType<typeof schema>;
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
+    defaultValues: { email: "nicolas@gmail.com", password: "123456789" },
   });
 
-  const onSubmit = (data: FormData) => alert(data);
+  const onSubmit = async (data: LoginFormData) => await login(data);
 
   const formFields: FormField[] = [
     {
@@ -52,7 +54,7 @@ export const LoginForm = () => {
             placeholder={field.placeholder}
             type={field.type}
             error={field.error}
-            {...register(field.name as keyof FormData)}
+            {...register(field.name as keyof LoginFormData)}
           />
           {field.error && <ErrorText>{field.error}</ErrorText>}
         </div>

@@ -9,7 +9,7 @@ enum ButtonColors {
 
 interface TableButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: keyof typeof ButtonColors;
-  rounded: boolean;
+  rounded?: boolean;
 }
 
 export const TableButton: React.FC<TableButtonProps> = ({

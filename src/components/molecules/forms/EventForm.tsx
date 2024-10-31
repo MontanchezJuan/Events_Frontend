@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { sign_up } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
 import { ButtonWhite } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
@@ -14,40 +13,26 @@ const schema = yup
       .string()
       .email("Ups, no corresponde a un correo electrónico.")
       .required("El correo electrónico es obligatorio."),
-    password: yup
-      .string()
-      .required("La contraseña es obligatoria.")
-      .min(8, "La contraseña debe tener al menos 8 caracteres.")
-      .matches(
-        /[A-Z]/,
-        "La contraseña debe tener al menos una letra mayúscula.",
-      )
-      .matches(/[0-9]/, "La contraseña debe tener al menos un número.")
-      .matches(
-        /[\W_]/,
-        "La contraseña debe tener al menos un carácter especial.",
-      ),
-    confirmPassword: yup
-      .string()
-      .oneOf(
-        [yup.ref("password"), undefined],
-        "Las contraseñas deben coincidir.",
-      )
-      .required("Por favor, confirma tu contraseña."),
+    password: yup.string().required("La contraseña es obligatoria."),
   })
   .required();
-export type SignupFormData = yup.InferType<typeof schema>;
+export type EventFormData = yup.InferType<typeof schema>;
 
-export const SignupForm = () => {
+interface EventFormProps {
+  initialValues?: EventFormData | undefined;
+}
+
+export const EventForm = ({ initialValues }: EventFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormData>({
+  } = useForm<EventFormData>({
     resolver: yupResolver(schema),
+    defaultValues: initialValues,
   });
 
-  const onSubmit = (data: SignupFormData) => sign_up(data);
+  const onSubmit = (data: EventFormData) => alert(data);
 
   const formFields: FormField[] = [
     {
@@ -62,12 +47,6 @@ export const SignupForm = () => {
       type: "password",
       error: errors.password?.message,
     },
-    {
-      placeholder: "Confirmar contraseña",
-      name: "confirmPassword",
-      type: "password",
-      error: errors.confirmPassword?.message,
-    },
   ];
 
   return (
@@ -78,14 +57,14 @@ export const SignupForm = () => {
             placeholder={field.placeholder}
             type={field.type}
             error={field.error}
-            {...register(field.name as keyof SignupFormData)}
+            {...register(field.name as keyof EventFormData)}
           />
           {field.error && <ErrorText>{field.error}</ErrorText>}
         </div>
       ))}
 
       <ButtonWhite type="submit" forForm>
-        Registrarse
+        {initialValues ? "Editar evento" : "Crear evento"}
       </ButtonWhite>
     </Form>
   );

@@ -8,7 +8,7 @@ import { RoleSwitcher } from "./RoleSwitcher";
 
 export const NavMenu = () => {
   const { isOpen, toggleDrawer, closeDrawer } = useDrawer();
-  const { role } = useStore((store) => store.user);
+  const { name: role } = useStore((store) => store.user.role);
   const menuItems = useMemo(() => getMenuItemsByRole(role), [role]);
 
   return (
