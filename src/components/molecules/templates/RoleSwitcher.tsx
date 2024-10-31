@@ -9,7 +9,7 @@ interface RoleSwitcherProps {
 }
 
 export const RoleSwitcher = ({ closeMenu }: RoleSwitcherProps) => {
-  const { role } = useStore((store) => store.user);
+  const { name: role } = useStore((store) => store.user.role);
 
   const navigate = useNavigate();
 

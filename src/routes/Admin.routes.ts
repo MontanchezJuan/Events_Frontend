@@ -5,6 +5,7 @@ export enum ADMINROUTES {
   HOME = "/",
   USERS = "/list-users",
   EVENTS = "/list-events",
+  EVENT = "/event/:id?",
 }
 
 // Here are routes to admin role
@@ -19,7 +20,11 @@ export const AdminRoutes: Route[] = [
     path: ADMINROUTES.USERS,
   },
   {
-    component: lazy(() => import("../pages/admin/EventsPage")),
+    component: lazy(() => import("../pages/admin/ListEventsPage")),
     path: ADMINROUTES.EVENTS,
+  },
+  {
+    component: lazy(() => import("../pages/admin/EventPage")),
+    path: ADMINROUTES.EVENT,
   },
 ];

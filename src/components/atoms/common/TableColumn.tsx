@@ -2,7 +2,7 @@ import React from "react";
 
 export interface ColumnProps<T> {
   className?: string;
-  dataIndex: keyof T;
+  dataIndex: keyof T | "actions";
   key: keyof T;
   title: string;
   render?: (item: T) => React.ReactNode;

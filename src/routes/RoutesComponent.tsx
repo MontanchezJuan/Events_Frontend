@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { RoleName } from "../api/interfaces/user";
 import { Route as RouteI } from "../interfaces/Route.interfaces";
-import { Role } from "../store/createUserSlice";
 import PrivateRoute from "./PrivateRoute";
 
 interface RoutesComponentProps {
   routes: RouteI[];
-  role: Role;
+  role: RoleName;
 }
 
 const RoutesComponent = ({ routes, role }: RoutesComponentProps) => {

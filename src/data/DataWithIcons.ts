@@ -1,7 +1,3 @@
-import { AiOutlineCalendar } from "react-icons/ai";
-import { BiColorFill } from "react-icons/bi";
-import { BsKanban } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
 import { LiaAdSolid } from "react-icons/lia";
 import {
   MdAccountCircle,
@@ -10,12 +6,12 @@ import {
   MdOutlinePeople,
 } from "react-icons/md";
 import { RiContactsLine } from "react-icons/ri";
+import { RoleName } from "../api/interfaces/user";
 import { NavItem } from "../components/molecules/templates/MenuItems";
 import { SidebarItems } from "../interfaces/Sidebar.interfaces";
 import { ADMINROUTES } from "../routes/Admin.routes";
-import { Role } from "../store/createUserSlice";
 
-export const getMenuItemsByRole = (role: Role): NavItem[] => {
+export const getMenuItemsByRole = (role: RoleName): NavItem[] => {
   const commonItems = [{ name: "Inicio", path: "/", icon: MdHomeFilled }];
 
   switch (role) {
@@ -33,35 +29,12 @@ export const getMenuItemsByRole = (role: Role): NavItem[] => {
   }
 };
 
-export const getSidebarItems = (role: Role): SidebarItems[] => {
+export const getSidebarItems = (role: RoleName): SidebarItems[] => {
   const paginasItems = [
     {
       name: "inicio",
       icon: MdHomeFilled,
       path: "/",
-    },
-  ];
-
-  const appsItems = [
-    {
-      name: "calendar",
-      icon: AiOutlineCalendar,
-      path: "/a",
-    },
-    {
-      name: "kanban",
-      icon: BsKanban,
-      path: "/b",
-    },
-    {
-      name: "editor",
-      icon: FiEdit,
-      path: "/c",
-    },
-    {
-      name: "color-picker",
-      icon: BiColorFill,
-      path: "/d",
     },
   ];
 
@@ -81,15 +54,11 @@ export const getSidebarItems = (role: Role): SidebarItems[] => {
           items: [
             ...paginasItems,
             {
-              name: "eventos",
+              name: "mis eventos",
               icon: MdEvent,
-              path: "/z",
+              path: ADMINROUTES.EVENTS,
             },
           ],
-        },
-        {
-          title: "Apps",
-          items: [...appsItems],
         },
         {
           title: "Configuraciones",
@@ -118,10 +87,6 @@ export const getSidebarItems = (role: Role): SidebarItems[] => {
               path: "/x",
             },
           ],
-        },
-        {
-          title: "Apps",
-          items: [...appsItems],
         },
         {
           title: "Configuraciones",
