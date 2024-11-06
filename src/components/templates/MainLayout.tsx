@@ -10,7 +10,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <Header />
 
       <div className="flex justify-center">
-        <section className="w-full md:w-[720px] lg:w-[1200px]">
+        <section className="w-full pb-16 md:w-[720px] lg:w-[1200px]">
           {children}
         </section>
       </div>

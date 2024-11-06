@@ -1,11 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { login } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
-import { ButtonWhite } from "../../atoms/common/Button";
+import { PrimaryButton } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
+import { Loader } from "../../atoms/common/Loader";
 import { Form } from "../../templates/Form";
 
 const schema = yup
@@ -20,16 +22,18 @@ const schema = yup
 export type LoginFormData = yup.InferType<typeof schema>;
 
 export const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
-    defaultValues: { email: "nicolas@gmail.com", password: "123456789" },
   });
 
-  const onSubmit = async (data: LoginFormData) => await login(data);
+  const onSubmit = async (data: LoginFormData) =>
+    await login({ ...data, setState: setIsLoading });
 
   const formFields: FormField[] = [
     {
@@ -60,9 +64,9 @@ export const LoginForm = () => {
         </div>
       ))}
 
-      <ButtonWhite type="submit" forForm>
-        Iniciar sesión
-      </ButtonWhite>
+      <PrimaryButton disabled={isLoading} type="submit" forForm>
+        {isLoading ? <Loader size={20} /> : "Iniciar sesión"}
+      </PrimaryButton>
     </Form>
   );
 };

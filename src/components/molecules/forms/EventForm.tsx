@@ -1,25 +1,38 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { Event } from "../../../api/interfaces/event";
 import { FormField } from "../../../interfaces/Form.interfaces";
-import { ButtonWhite } from "../../atoms/common/Button";
+import { PrimaryButton } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
 import { Form } from "../../templates/Form";
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .email("Ups, no corresponde a un correo electrónico.")
-      .required("El correo electrónico es obligatorio."),
-    password: yup.string().required("La contraseña es obligatoria."),
-  })
-  .required();
+const schema = yup.object({
+  categories: yup
+    .array()
+    .of(yup.string().required("Cada categoría debe ser una cadena de texto."))
+    .min(1, "Debe tener al menos una categoría."),
+  date: yup
+    .date()
+    .required("La fecha es obligatoria.")
+    .typeError("La fecha debe ser válida."),
+  description: yup.string().required("La descripción es obligatoria."),
+  entity: yup.string().required("La entidad es obligatoria."),
+  image: yup.string().url("La imagen debe ser una URL válida."),
+  name: yup.string().required("El nombre es obligatorio."),
+  organizer_id: yup.string().required("El ID del organizador es obligatorio."),
+  restrictions: yup
+    .array()
+    .of(
+      yup.string().required("Cada restricción debe ser una cadena de texto."),
+    ),
+  site: yup.string().required("El sitio es obligatorio."),
+});
 export type EventFormData = yup.InferType<typeof schema>;
 
 interface EventFormProps {
-  initialValues?: EventFormData | undefined;
+  initialValues?: Event | null;
 }
 
 export const EventForm = ({ initialValues }: EventFormProps) => {
@@ -29,23 +42,44 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
     formState: { errors },
   } = useForm<EventFormData>({
     resolver: yupResolver(schema),
-    defaultValues: initialValues,
+    defaultValues: initialValues
+      ? {
+          ...initialValues,
+          date: new Date(initialValues.date),
+        }
+      : {
+          categories: [],
+          date: new Date(),
+          description: "",
+          entity: "",
+          image: "",
+          name: "",
+          organizer_id: "",
+          restrictions: [],
+          site: "",
+        },
   });
 
   const onSubmit = (data: EventFormData) => alert(data);
 
   const formFields: FormField[] = [
     {
-      placeholder: "Correo electrónico",
-      name: "email",
+      placeholder: "Nombre del evento",
+      name: "name",
       type: "text",
-      error: errors.email?.message,
+      error: errors.name?.message,
     },
     {
-      placeholder: "Contraseña",
-      name: "password",
-      type: "password",
-      error: errors.password?.message,
+      placeholder: "Descripción",
+      name: "description",
+      type: "text",
+      error: errors.description?.message,
+    },
+    {
+      placeholder: "Lugar",
+      name: "site",
+      type: "text",
+      error: errors.site?.message,
     },
   ];
 
@@ -63,9 +97,11 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
         </div>
       ))}
 
-      <ButtonWhite type="submit" forForm>
+      {JSON.stringify(initialValues)}
+
+      <PrimaryButton type="submit" forForm>
         {initialValues ? "Editar evento" : "Crear evento"}
-      </ButtonWhite>
+      </PrimaryButton>
     </Form>
   );
 };

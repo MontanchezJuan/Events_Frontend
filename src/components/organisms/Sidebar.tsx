@@ -47,7 +47,12 @@ const Sidebar = () => {
                   return `${isActive ? activeLink : normalLink} justify-center`;
                 }}
                 key={item.name}
-                onClick={closeMenu}
+                onClick={() => {
+                  if (item.func) {
+                    item.func();
+                  }
+                  closeMenu();
+                }}
                 to={item.path}
               >
                 <item.icon className="text-2xl" />

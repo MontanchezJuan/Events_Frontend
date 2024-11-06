@@ -1,9 +1,10 @@
 import { StateCreator } from "zustand";
-import axiosClient from "../api/axiosClient";
-import { ENDPOINTS } from "../api/endpoints";
+import { axiosSecurity } from "../api/axiosClient";
+import { ENDPOINTS_SECURITY } from "../api/endpoints";
 import { ResponseData } from "../api/interfaces/common";
 import { User } from "../api/interfaces/user";
 import { isTokenExpired } from "../utils/jwt";
+import { Alert } from "../utils/swal";
 
 export interface UserSlice {
   user: User & { token: string | null };
@@ -33,10 +34,10 @@ const createUserSlice: StateCreator<UserSlice> = (set) => ({
 
   checkAndLoadUser: async () => {
     const token = localStorage.getItem("token");
-    if (token && !isTokenExpired(token)) {
+    if (!!token && !isTokenExpired(token)) {
       try {
-        const res = await axiosClient.get<ResponseData<User>>(
-          ENDPOINTS.GET_USER,
+        const res = await axiosSecurity.get<ResponseData<User>>(
+          ENDPOINTS_SECURITY.GET_USER,
         );
 
         if (res.data && res.data.data) {
@@ -44,18 +45,19 @@ const createUserSlice: StateCreator<UserSlice> = (set) => ({
           set((state) => ({
             user: { ...state.user, ...user },
           }));
-        } else {
-          console.error("La respuesta no contiene un usuario válido");
         }
-      } catch (error) {
-        console.error("Error en get_user:", error);
+      } catch (e) {
+        localStorage.removeItem("token");
+        set(() => ({
+          user: { ...initialUser },
+        }));
+        Alert({
+          title: "Ups!",
+          message: "Tu sesión ha expirado",
+          icon: "info",
+        });
+        console.error("Error al verificar al usuario:", e);
       }
-    } else {
-      console.log("Token expirado o no válido");
-      set(() => ({
-        user: { ...initialUser },
-      }));
-      localStorage.removeItem("token");
     }
   },
 
