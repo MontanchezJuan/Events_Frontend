@@ -30,7 +30,6 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
-    defaultValues: { email: "nicolas@gmail.com", password: "123456789" },
   });
 
   const onSubmit = async (data: LoginFormData) =>
