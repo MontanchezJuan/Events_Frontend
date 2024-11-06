@@ -1,10 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { sign_up } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
-import { ButtonWhite } from "../../atoms/common/Button";
+import { PrimaryButton } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
+import { Loader } from "../../atoms/common/Loader";
 import { Form } from "../../templates/Form";
 
 const schema = yup
@@ -35,18 +39,22 @@ const schema = yup
       .required("Por favor, confirma tu contraseña."),
   })
   .required();
-type FormData = yup.InferType<typeof schema>;
+export type SignupFormData = yup.InferType<typeof schema>;
 
 export const SignupForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<SignupFormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => alert(JSON.stringify(data));
+  const onSubmit = (data: SignupFormData) =>
+    sign_up({ ...data, setState: setIsLoading, navigate });
 
   const formFields: FormField[] = [
     {
@@ -77,15 +85,15 @@ export const SignupForm = () => {
             placeholder={field.placeholder}
             type={field.type}
             error={field.error}
-            {...register(field.name as keyof FormData)}
+            {...register(field.name as keyof SignupFormData)}
           />
           {field.error && <ErrorText>{field.error}</ErrorText>}
         </div>
       ))}
 
-      <ButtonWhite type="submit" forForm>
-        Registrarse
-      </ButtonWhite>
+      <PrimaryButton disabled={isLoading} type="submit" forForm>
+        {isLoading ? <Loader size={20} /> : "Registrarse"}
+      </PrimaryButton>
     </Form>
   );
 };

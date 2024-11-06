@@ -7,4 +7,5 @@ interface SidebarItem {
   icon: React.ElementType;
   name: string;
   path: string;
+  func?: () => void;
 }

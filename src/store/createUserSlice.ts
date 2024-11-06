@@ -1,26 +1,80 @@
 import { StateCreator } from "zustand";
-
-export type Role = "admin" | "organizer" | "user" | "unauthenticated";
-
-interface User {
-  role: Role;
-}
+import { axiosSecurity } from "../api/axiosClient";
+import { ENDPOINTS_SECURITY } from "../api/endpoints";
+import { ResponseData } from "../api/interfaces/common";
+import { User } from "../api/interfaces/user";
+import { isTokenExpired } from "../utils/jwt";
+import { Alert } from "../utils/swal";
 
 export interface UserSlice {
-  user: User;
-  setRole: (newRole: Role) => void;
+  user: User & { token: string | null };
+  checkAndLoadUser: () => Promise<void>;
+  resetUser: () => void;
+  setToken: (token: string | null) => void;
+  setUser: (newUser: User) => void;
 }
 
-const createUserSlice: StateCreator<UserSlice> = (set) => ({
-  user: { role: "unauthenticated" },
+const initialUser: User & { token: string | null } = {
+  email: "",
+  id: "",
+  role: {
+    id: "",
+    description: "",
+    name: "unauthenticated",
+    status: 0,
+    totalPermissions: [],
+  },
+  password: "",
+  userProfile: null,
+  token: localStorage.getItem("token"),
+};
 
-  setRole: (newRole: Role) =>
-    set((state) => {
-      if (newRole) {
-        return { ...state.user, user: { role: newRole } };
+const createUserSlice: StateCreator<UserSlice> = (set) => ({
+  user: initialUser,
+
+  checkAndLoadUser: async () => {
+    const token = localStorage.getItem("token");
+    if (!!token && !isTokenExpired(token)) {
+      try {
+        const res = await axiosSecurity.get<ResponseData<User>>(
+          ENDPOINTS_SECURITY.GET_USER,
+        );
+
+        if (res.data && res.data.data) {
+          const user = res.data.data;
+          set((state) => ({
+            user: { ...state.user, ...user },
+          }));
+        }
+      } catch (e) {
+        localStorage.removeItem("token");
+        set(() => ({
+          user: { ...initialUser },
+        }));
+        Alert({
+          title: "Ups!",
+          message: "Tu sesión ha expirado",
+          icon: "info",
+        });
+        console.error("Error al verificar al usuario:", e);
       }
-      return state;
-    }),
+    }
+  },
+
+  resetUser: () =>
+    set(() => ({
+      user: { ...initialUser },
+    })),
+
+  setToken: (token: string | null) =>
+    set((state) => ({
+      user: { ...state.user, token },
+    })),
+
+  setUser: (newUser: User) =>
+    set((state) => ({
+      user: { ...state.user, ...newUser },
+    })),
 });
 
 export default createUserSlice;

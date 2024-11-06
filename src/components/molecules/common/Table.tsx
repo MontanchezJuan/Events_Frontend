@@ -28,6 +28,12 @@ export const Table = <T extends { [key: string]: any }>({
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  const getNestedValue = (obj: any, path: string) => {
+    return path
+      .split(".")
+      .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
+  };
+
   const currentData = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
@@ -45,16 +51,16 @@ export const Table = <T extends { [key: string]: any }>({
 
   return (
     <>
-      <div className="overflow-x-auto p-4">
-        <table className="min-w-full table-auto bg-zinc-300 text-zinc-900">
+      <div className="overflow-x-auto rounded-tl-2xl rounded-tr-2xl p-4">
+        <table className="min-w-full table-auto text-zinc-900">
           <thead>
-            <tr className="bg-zinc-700 text-white">
-              {columnsChildren.map((column: any, index: number) => {
-                const { title } = column.props;
+            <tr className="bg-[#2C2C2C] text-white">
+              {columnsChildren.map((column, index) => {
+                const { title, textCenter } = column.props;
                 return (
                   <th
                     key={index}
-                    className="whitespace-nowrap px-4 py-2 capitalize"
+                    className={`whitespace-nowrap px-4 py-2 capitalize ${!textCenter && "text-left"}`}
                   >
                     {title}
                   </th>
@@ -66,9 +72,7 @@ export const Table = <T extends { [key: string]: any }>({
             {currentData.map((item, index) => (
               <tr
                 key={index}
-                className={`${
-                  index % 2 === 0 ? "bg-white" : "bg-zinc-200"
-                } hover:bg-zinc-400`}
+                className={`${index % 2 === 0 ? "bg-white" : "bg-[#EAEAEB]"} `}
               >
                 {columnsChildren.map((column, index) => {
                   const { className, dataIndex, render } = column.props;
@@ -78,12 +82,9 @@ export const Table = <T extends { [key: string]: any }>({
                   return (
                     <td
                       key={index}
-                      //whitespace-nowrap
-                      className={`${className || "whitespace-nowrap px-4 py-2"}`}
+                      className={`${className || "whitespace-nowrap border-l-2 border-r-2 border-[#2C2C2C] px-4 py-2"}`}
                     >
-                      {render
-                        ? render(item)
-                        : (item[dataIndex] as React.ReactNode)}
+                      {render ? render(item) : getNestedValue(item, dataIndex)}
                     </td>
                   );
                 })}
@@ -92,6 +93,7 @@ export const Table = <T extends { [key: string]: any }>({
           </tbody>
         </table>
       </div>
+
       <div className="mt-4 flex items-center justify-between">
         <TableButton
           onClick={handlePrevious}

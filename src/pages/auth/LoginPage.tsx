@@ -6,9 +6,8 @@ const LoginPage = () => {
   return (
     <MainLayout>
       <main className="flex min-h-[calc(100vh_-_60px)] w-full flex-col items-center justify-center gap-4">
-        <UnderlineText text="Es un placer" color="after:bg-white" size="2xl" />
         <UnderlineText
-          text="volverte a ver"
+          text="Es un placer volverte a ver"
           color="after:bg-white"
           size="2xl"
         />

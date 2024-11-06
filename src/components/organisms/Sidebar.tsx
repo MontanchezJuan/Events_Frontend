@@ -6,7 +6,7 @@ import useStore from "../../store/useStore";
 import { LogoButton } from "../atoms/templates/LogoButton";
 
 const Sidebar = () => {
-  const { role } = useStore((store) => store.user);
+  const { name: role } = useStore((store) => store.user.role);
   const setIsSidebarOpen = useStore((store) => store.setIsSidebarOpen);
   const { screenSize, isSidebarOpen } = useStore((store) => store.screen);
 
@@ -47,7 +47,12 @@ const Sidebar = () => {
                   return `${isActive ? activeLink : normalLink} justify-center`;
                 }}
                 key={item.name}
-                onClick={closeMenu}
+                onClick={() => {
+                  if (item.func) {
+                    item.func();
+                  }
+                  closeMenu();
+                }}
                 to={item.path}
               >
                 <item.icon className="text-2xl" />
