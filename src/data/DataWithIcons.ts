@@ -43,7 +43,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
     {
       name: "Cuenta",
       icon: MdAccountCircle,
-      path: "/a",
+      path: ADMINROUTES.PROFILE,
     },
     {
       name: "Cerrar sesión",
