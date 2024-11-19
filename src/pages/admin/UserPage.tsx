@@ -31,9 +31,12 @@ export default function UserPage() {
     fetchUser();
   }, [id]);
 
-  if (!user) return SingupPage;
-  
-  <p className="text-center text-red-500">Usuario no encontrado.</p>;
+  if (!user) return (
+    <div className="error-container">
+      <h1 className="error-message">Usuario no encontrado</h1>
+      <p className="text-center text-red-500">Usuario no encontrado.</p>;
+    </div>
+  );
 
   // Handler para la edición del usuario
   const handleEdit = (e: { preventDefault: () => void; }) => {
@@ -100,3 +103,4 @@ export default function UserPage() {
     </AdminLayout>
   );
 }
+
