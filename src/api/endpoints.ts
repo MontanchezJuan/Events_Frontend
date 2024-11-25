@@ -4,6 +4,7 @@ export const ENDPOINTS_SECURITY = {
   LOGIN: "/security/login",
   SIGN_UP: "/security/sign-up",
   GET_USER: "/security/get-user",
+  AUTHENTICATED_USER_PROFILE: '/profiles/get-user',
 };
 
 export type ENDPOINTS_SECURITY_Type = typeof ENDPOINTS_SECURITY;

@@ -7,7 +7,7 @@ export enum ADMINROUTES {
   EVENTS = "/list-events",
   EVENT = "/event/:id?",
   USER = "/user/:id?",
-  PROFILE = "/admin-profile/:id?",
+  PROFILE = "/profile/:id?",
 }
 
 // Here are routes to admin role

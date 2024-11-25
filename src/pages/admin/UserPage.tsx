@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { User } from "../../api/interfaces/user";
 import { user_by_id } from "../../api/services/usersService";
-import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import AdminLayout from "../../components/templates/AdminLayout";
 
 // Importar el archivo CSS personalizado
 import './custom-styles.css';
-import SingupPage from "../auth/SingupPage";
 
 interface RouteParams extends Record<string, string | undefined> {
   id: string;

@@ -76,3 +76,27 @@ export const user_by_id = async ({
 //     setState(false);
 //   }
 // };
+export const getAuthenticatedUserProfile = async ({
+  id,
+  setState, 
+
+}: {
+  id: string;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+}): Promise<User | null> => {
+  try {
+    setState(true);
+    const { data } = await axiosSecurity.get<ResponseData<User>>(
+      `${ENDPOINTS_SECURITY.AUTHENTICATED_USER_PROFILE}${id}`
+    );
+
+    return data?.data || null;
+  } catch (e: any) {
+    const errorMessage = e.response?.data?.message || "Algo salió mal";
+    Alert({ message: errorMessage });
+    console.error("Error al obtener el perfil del usuario autenticado:", e);
+    return null;
+  } finally {
+    setState(false);
+  }
+};
