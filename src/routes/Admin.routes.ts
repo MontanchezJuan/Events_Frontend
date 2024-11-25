@@ -7,6 +7,7 @@ export enum ADMINROUTES {
   EVENTS = "/list-events",
   EVENT = "/event/:id?",
   USER = "/user/:id?",
+  PROFILE = "/profile/:id?",
 }
 
 // Here are routes to admin role
@@ -15,6 +16,10 @@ export const AdminRoutes: Route[] = [
     component: lazy(() => import("../pages/admin/DashboardPage")),
     index: true,
     path: ADMINROUTES.HOME,
+  },
+  {
+  component: lazy(() => import("../pages/admin/AdminProfile")),
+  path: ADMINROUTES.PROFILE,
   },
   {
     component: lazy(() => import("../pages/admin/ListUsersPage")),

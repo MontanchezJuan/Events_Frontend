@@ -96,7 +96,7 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
           {field.error && <ErrorText>{field.error}</ErrorText>}
         </div>
       ))}
-
+       {/* imprimir los valores de la interfaz */}
       {JSON.stringify(initialValues)}
 
       <PrimaryButton type="submit" forForm>
