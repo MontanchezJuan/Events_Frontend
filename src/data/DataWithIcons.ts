@@ -1,30 +1,41 @@
-import { LiaAdSolid } from "react-icons/lia";
 import {
   MdAccountCircle,
+  MdCalendarMonth,
   MdEvent,
-  MdHomeFilled,
+  MdHome,
+  MdLocalPlay,
   MdLogout,
+  MdOutlineFactCheck,
   MdOutlinePeople,
 } from "react-icons/md";
 import { RoleName } from "../api/interfaces/user";
 import { NavItem } from "../components/molecules/templates/MenuItems";
 import { SidebarItems } from "../interfaces/Sidebar.interfaces";
 import { ADMINROUTES } from "../routes/Admin.routes";
+import { USERROUTES } from "../routes/User.routes";
 import useStore from "../store/useStore";
 
 export const getMenuItemsByRole = (role: RoleName): NavItem[] => {
-  const commonItems = [{ name: "Inicio", path: "/", icon: MdHomeFilled }];
+  const commonItems = [{ name: "Inicio", path: "/", icon: MdHome }];
 
   switch (role) {
     case "user":
       return [
         ...commonItems,
-        { name: "Eventos", path: "/", icon: LiaAdSolid },
-        { name: "Calendario", path: "/", icon: LiaAdSolid },
-        { name: "Certificaciones", path: "/", icon: LiaAdSolid },
+        { name: "Eventos", path: USERROUTES.MyEvents, icon: MdEvent },
+        {
+          name: "Calendario",
+          path: USERROUTES.Calendar,
+          icon: MdCalendarMonth,
+        },
+        {
+          name: "Certificaciones",
+          path: USERROUTES.Certifications,
+          icon: MdLocalPlay,
+        },
       ];
     case "unauthenticated":
-      return [...commonItems];
+      return commonItems;
     default:
       return [];
   }
@@ -34,7 +45,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
   const paginasItems = [
     {
       name: "inicio",
-      icon: MdHomeFilled,
+      icon: MdHome,
       path: "/",
     },
   ];
@@ -50,6 +61,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
       icon: MdLogout,
       path: "/logout",
       func: () => {
+        localStorage.removeItem("token");
         useStore.getState().resetUser();
       },
     },
@@ -89,6 +101,11 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
               name: "usuarios",
               icon: MdOutlinePeople,
               path: ADMINROUTES.USERS,
+            },
+            {
+              name: "inscripciones",
+              icon: MdOutlineFactCheck,
+              path: ADMINROUTES.INSCRIPTIONS,
             },
           ],
         },

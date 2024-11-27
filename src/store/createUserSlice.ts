@@ -25,7 +25,11 @@ const initialUser: User & { token: string | null } = {
     totalPermissions: [],
   },
   password: "",
-  userProfile: null,
+  userProfile: {
+    id: "",
+    name: "",
+    profilePhoto: "",
+  },
   token: localStorage.getItem("token"),
 };
 
@@ -43,17 +47,17 @@ const createUserSlice: StateCreator<UserSlice> = (set) => ({
         if (res.data && res.data.data) {
           const user = res.data.data;
           set((state) => ({
-            user: { ...state.user, ...user },
+            user: { ...state.user, ...user, token },
           }));
         }
       } catch (e) {
         localStorage.removeItem("token");
         set(() => ({
-          user: { ...initialUser },
+          user: initialUser,
         }));
         Alert({
           title: "Ups!",
-          message: "Tu sesión ha expirado",
+          text: "Tu sesión ha expirado",
           icon: "info",
         });
         console.error("Error al verificar al usuario:", e);

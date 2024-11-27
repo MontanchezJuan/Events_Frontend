@@ -8,7 +8,6 @@ import { PublicRoutes } from "./routes/Public.routes";
 import RoutesComponent from "./routes/RoutesComponent";
 import { UserRoutes } from "./routes/User.routes";
 import useStore from "./store/useStore";
-import Footer from "./components/molecules/templates/footer.tsx";
 
 function App() {
   const { name: role } = useStore((store) => store.user.role);
@@ -35,11 +34,8 @@ function App() {
           role={routesByRole[role].requiredRole}
           routes={routesByRole[role].routes}
         />
-        <Footer />
       </Suspense>
-
     </BrowserRouter>
-
   );
 }
 

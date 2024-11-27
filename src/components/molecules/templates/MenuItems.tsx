@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { UnderlineText } from "../../atoms/common/UnderlineText";
+import { NavLink } from "react-router-dom";
 
 export interface NavItem {
   name: string;
@@ -10,31 +9,20 @@ export interface NavItem {
 interface MenuItemsProps {
   menuItems: NavItem[];
   closeMenu: () => void;
-  type: "Link" | "Button";
 }
 
-export const MenuItems = ({ menuItems, closeMenu, type }: MenuItemsProps) => {
-  if (type === "Button") {
-    return menuItems.map((item, index) => (
-      <button key={`${item.name + index}`} onClick={closeMenu}>
-        <UnderlineText
-          text={item.name}
-          color="after:bg-white"
-          size="lg"
-          icon={<item.icon className="mr-1 inline-block" />}
-        />
-      </button>
-    ));
-  }
-
+export const MenuItems = ({ menuItems, closeMenu }: MenuItemsProps) => {
   return menuItems.map((item, index) => (
-    <Link to={item.path} key={`${item.name + index}`} onClick={closeMenu}>
-      <UnderlineText
-        text={item.name}
-        color="after:bg-white"
-        size="lg"
-        icon={<item.icon className="mr-1 inline-block" />}
-      />
-    </Link>
+    <NavLink
+      to={item.path}
+      className={({ isActive }) =>
+        `${isActive ? "text-[#00ff66]" : "text-white transition-colors duration-700 hover:text-[#00ff66]"} flex items-center gap-1`
+      }
+      key={`${item.name + index}`}
+      onClick={closeMenu}
+    >
+      <item.icon />
+      {item.name}
+    </NavLink>
   ));
 };

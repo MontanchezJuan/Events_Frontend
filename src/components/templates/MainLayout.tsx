@@ -1,3 +1,4 @@
+import Footer from "../molecules/templates/footer";
 import { Header } from "../organisms/Header";
 
 interface MainLayoutProps {
@@ -14,6 +15,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           {children}
         </section>
       </div>
+
+      <Footer />
     </>
   );
 };

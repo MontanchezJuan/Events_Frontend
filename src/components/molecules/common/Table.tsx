@@ -82,7 +82,7 @@ export const Table = <T extends { [key: string]: any }>({
                   return (
                     <td
                       key={index}
-                      className={`${className || "whitespace-nowrap border-l-2 border-r-2 border-[#2C2C2C] px-4 py-2"}`}
+                      className={`${className || "border-l-2 border-r-2 border-[#2C2C2C] px-4 py-2"}`}
                     >
                       {render ? render(item) : getNestedValue(item, dataIndex)}
                     </td>

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { MdLogout } from "react-icons/md";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import useStore from "../../../store/useStore";
 import { UnderlineText } from "../../atoms/common/UnderlineText";
 import { ProfileButton } from "../common/ProfileButton";
 import { AccountMenu } from "./AccountMenu";
@@ -10,11 +11,14 @@ export const AccountNavItem = () => {
   const closeMenu = useCallback(() => {
     setShowMenu(false);
   }, []);
+
   const handleProfileClick = useCallback(() => {
     alert("Ir al perfil");
   }, []);
+
   const handleLogoutClick = useCallback(() => {
-    alert("Cerrar sesión");
+    localStorage.removeItem("token");
+    useStore.getState().resetUser();
   }, []);
 
   const menuRef = useClickOutside(closeMenu);

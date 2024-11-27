@@ -40,7 +40,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             setIsSidebarOpen={setIsSidebarOpen}
           />
 
-          <div className="flex min-h-[calc(100vh_-_60px)] w-full justify-center p-4 pb-10">
+          <div className="flex min-h-[calc(100vh_-_60px)] w-full justify-center px-0 py-8 pb-10 md:px-16">
             <section className="w-full max-w-[1200px] rounded-lg bg-zinc-900 p-4">
               {children}
             </section>

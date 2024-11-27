@@ -3,7 +3,7 @@ export interface User {
   email: string;
   password: string;
   role: Role;
-  userProfile: null;
+  userProfile: UserProfile;
 }
 
 export type RoleName = "admin" | "organizer" | "user" | "unauthenticated";
@@ -22,4 +22,10 @@ export interface TotalPermission {
   method: string;
   description: string;
   status: number;
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  profilePhoto: string;
 }

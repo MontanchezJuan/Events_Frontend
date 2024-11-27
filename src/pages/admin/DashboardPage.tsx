@@ -1,66 +1,77 @@
-// src/pages/Dashboard.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import AdminLayout from "../../components/templates/AdminLayout";
-import { list_users } from "../../api/services/usersService";
-import { list_events } from "../../api/services/eventsService";
-import { User } from "../../api/interfaces/user";
 import { Event } from "../../api/interfaces/event";
-import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
+import { User } from "../../api/interfaces/user";
+import { list_events } from "../../api/services/eventsService";
+import { list_users } from "../../api/services/usersService";
+import AdminLayout from "../../components/templates/AdminLayout";
+// import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  LineChart, Line, PieChart, Pie, Cell
-} from 'recharts';
-import './custom-styles.css'; // Importar los estilos CSS personalizados
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import "./custom-styles.css";
 
-const Dashboard = () => {
+export default function Dashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       const userList = await list_users({ setState: setIsLoading });
-      const eventList = await list_events({ setState: setIsLoading });
       setUsers(userList);
+      const eventList = await list_events({ setState: setIsLoading });
       setEvents(eventList);
-      setIsLoading(false);
     };
 
     fetchData();
   }, []);
 
-  const getLastThreeMonthsData = (data: any[], key: string) => {
+  const getLastThreeMonthsData = <T extends { [key: string]: any }>(
+    data: T[],
+    key: string,
+  ) => {
     const now = new Date();
     const lastThreeMonths = Array.from({ length: 3 }, (_, i) => {
       const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
       return {
-        month: date.toLocaleString('default', { month: 'short' }),
-        [key]: data.filter(item => new Date(item.created_at).getMonth() === date.getMonth()).length
+        month: date.toLocaleString("default", { month: "short" }),
+        [key]: data.filter(
+          (item) => new Date(item.created_at).getMonth() === date.getMonth(),
+        ).length,
       };
     }).reverse();
     return lastThreeMonths;
   };
 
-  const userStats = getLastThreeMonthsData(users, 'users');
-  const eventStats = getLastThreeMonthsData(events, 'events');
+  const userStats = getLastThreeMonthsData<User>(users, "users");
+  const eventStats = getLastThreeMonthsData<Event>(events, "events");
 
-  // Example Data for Pie Chart
   const deviceData = [
-    { name: 'Mobile', value: 65 },
-    { name: 'Desktop', value: 25 },
-    { name: 'Tablet', value: 10 }
+    { name: "Mobile", value: 65 },
+    { name: "Desktop", value: 25 },
+    { name: "Tablet", value: 10 },
   ];
 
-  const COLORS = ['#00C950', '#0088FE', '#FFBB28', '#FF8042'];
+  const COLORS = ["#00C950", "#0088FE", "#FFBB28", "#FF8042"];
 
   return (
     <AdminLayout>
       <div className="container">
-        <h1 className="title">Bienvenido, Administrador</h1>
-        
+        <h1 className="title">Bienvenido</h1>
+
         {/* Tarjetas de Estadísticas Rápidas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-stats">
+        <div className="grid-stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <div className="card">
             <h2 className="card-title">Usuarios Totales</h2>
             <p className="card-value text-green">{users.length}</p>
@@ -121,9 +132,21 @@ const Dashboard = () => {
             <div className="pie-chart-container">
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
-                  <Pie data={deviceData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+                  <Pie
+                    data={deviceData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                    label
+                  >
                     {deviceData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -135,6 +158,4 @@ const Dashboard = () => {
       </div>
     </AdminLayout>
   );
-};
-
-export default Dashboard;
+}

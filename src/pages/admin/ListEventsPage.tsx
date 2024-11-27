@@ -3,28 +3,52 @@ import { MdCreate, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { Event } from "../../api/interfaces/event";
-import { list_events } from "../../api/services/eventsService";
+import { delete_event, list_events } from "../../api/services/eventsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableButton } from "../../components/atoms/common/TableButton";
 import { TableColumn } from "../../components/atoms/common/TableColumn";
 import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
+import { Alert } from "../../utils/swal";
 
 export default function ListEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const get_events = async () => {
+    const userList = await list_events({ setState: setIsLoading });
+
+    setEvents(userList);
+  };
+
   useEffect(() => {
-    const get_events = async () => {
-      const userList = await list_events({ setState: setIsLoading });
-
-      setEvents(userList);
-    };
-
     get_events();
   }, []);
+
+  const deleteEvent = (id: string) => {
+    Alert({
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Sí, eliminar evento",
+      icon: "question",
+      showCancelButton: true,
+      text: `Deseas eliminar este evento?`,
+      title: "Alerta",
+    }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        const resquest = async () => {
+          const res = await delete_event({ id, setState: setIsLoading });
+          if (res) {
+            await get_events();
+            Alert({ text: res, icon: "success", title: "Ok" });
+          }
+        };
+
+        resquest();
+      }
+    });
+  };
 
   return (
     <AdminLayout>
@@ -37,14 +61,14 @@ export default function ListEventsPage() {
       </div>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<Event> data={events} ignoreElements={["_id"]} itemsPerPage={4}>
+        <Table<Event> data={events} ignoreElements={["_id"]} itemsPerPage={5}>
           <TableColumn<Event>
             key="_id"
             dataIndex="image"
-            title="Fondo"
+            title="Imagen"
             textCenter
             render={({ image, name }) => (
-              <img className="h-16 w-16" src={image} alt={name} />
+              <img className="w-h-20 h-20" src={image} alt={name} />
             )}
           />
           <TableColumn<Event> key="_id" dataIndex="name" title="Nombre" />
@@ -92,7 +116,12 @@ export default function ListEventsPage() {
                     Editar evento
                   </Tooltip>
                 </TableButton>
-                <TableButton color="red" rounded data-tooltip-id="delete">
+                <TableButton
+                  color="red"
+                  rounded
+                  data-tooltip-id="delete"
+                  onClick={() => deleteEvent(_id)}
+                >
                   <MdDelete />
                   <Tooltip id="delete" place="top">
                     Eliminar evento

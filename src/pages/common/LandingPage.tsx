@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineSearch } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { Event } from "../../api/interfaces/event";
 import { list_events } from "../../api/services/eventsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
@@ -8,22 +9,24 @@ import EventCard from "../../components/molecules/cards/eventCards";
 import MainLayout from "../../components/templates/MainLayout";
 import "./LandingPage.css";
 
-const LandingPage: React.FC = () => {
+export default function LandingPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const get_events = async () => {
-      const userList = await list_events({ setState: setIsLoading });
+      const eventList = await list_events({ setState: setIsLoading });
 
-      setEvents(userList);
+      setEvents(eventList);
     };
 
     get_events();
   }, []);
 
-  const handleRegister = (eventTitle: string) => {
-    alert(`Te has registrado en ${eventTitle}`);
+  const handleClick = (eventId: string) => {
+    navigate(`/events/event/${eventId}`);
   };
 
   const handleSearch = () => {
@@ -88,19 +91,12 @@ const LandingPage: React.FC = () => {
           {events.map((event, index) => (
             <EventCard
               key={index}
-              title={event.name}
-              description={event.description}
-              date={event.date}
-              imageUrl={event.image}
-              categories={event.categories}
-              site={event.site}
-              onRegister={() => handleRegister(event.name)}
+              event={event}
+              onRegister={() => handleClick(event._id)}
             />
           ))}
         </div>
       </LoaderComponent>
     </MainLayout>
   );
-};
-
-export default LandingPage;
+}

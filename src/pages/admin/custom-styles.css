@@ -2,84 +2,83 @@
 
 /* Colores personalizados */
 :root {
-    --background-color: #18181B;
-    --primary-color: #00C950;
-    --text-color: #FFFFFF;
-    --secondary-text-color: #8F8F8F;
-  }
-  
-  /* Estilos generales */
-  body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Ajustes del contenedor */
-  .user-page-container {
-    max-width: 64rem; /* equivalente a max-w-4xl en Tailwind */
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  
-  /* Títulos */
-  .user-title {
-    font-size: 1.875rem; /* equivalente a text-3xl */
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: var(--text-color);
-    text-align: center;
-  }
-  
-  /* Formulario */
-  .user-form {
-    background-color: var(--background-color);
-    padding: 1rem;
-    border-radius: 0.375rem; /* equivalente a rounded-lg */
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* shadow-md */
-    border: 1px solid var(--primary-color);
-    margin-bottom: 2rem;
-  }
-  
-  /* Input del formulario */
-  .user-form input {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: transparent;
-    color: var(--text-color);
-    border: none;
-    border-bottom: 2px solid var(--primary-color);
-    outline: none;
-    transition: border-color 0.3s;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-  }
-  
-  /* Efecto hover en los inputs */
-  .user-form input:focus {
-    border-color: var(--primary-color);
-  }
-  
-  /* Botón */
-  .save-button {
-    padding: 0.5rem 1rem; /* Tamaño original del botón */
-    background-color: #32CD32; /* Verde claro */
-    color: var(--text-color);
-    border: none;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 1rem; /* Tamaño original de fuente */
-  }
-  
-  .save-button:hover {
-    background-color: #28a745; /* Verde más oscuro */
-  }
+  --background-color: #18181b;
+  --primary-color: #00ff66;
+  --text-color: #ffffff;
+  --secondary-text-color: #8f8f8f;
+}
 
-  /* Estilos par la dashboard 
+/* Estilos generales */
+body {
+  color: var(--text-color);
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ajustes del contenedor */
+.user-page-container {
+  max-width: 64rem; /* equivalente a max-w-4xl en Tailwind */
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Títulos */
+.user-title {
+  font-size: 1.875rem; /* equivalente a text-3xl */
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Formulario */
+.user-form {
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-radius: 0.375rem; /* equivalente a rounded-lg */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* shadow-md */
+  border: 1px solid var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+/* Input del formulario */
+.user-form input {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  border-bottom: 2px solid var(--primary-color);
+  outline: none;
+  transition: border-color 0.3s;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Efecto hover en los inputs */
+.user-form input:focus {
+  border-color: var(--primary-color);
+}
+
+/* Botón */
+.save-button {
+  padding: 0.5rem 1rem; /* Tamaño original del botón */
+  background-color: #32cd32; /* Verde claro */
+  color: var(--text-color);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem; /* Tamaño original de fuente */
+}
+
+.save-button:hover {
+  background-color: var(--primary-color);
+}
+
+/* Estilos par la dashboard 
   /* custom-styles.css */
 
 @media (min-width: 768px) {
@@ -96,122 +95,119 @@
   }
 }
 
-
-  
-  /* Mantener el botón constante en todos los tamaños de pantalla */
-  @media (max-width: 640px) {
-    .save-button {
-      padding: 0.5rem 1rem; /* Mantener tamaño original en móviles */
-      font-size: 1rem;
-    }
-  }
-  
-  /* Etiquetas del formulario */
-  .user-form label {
-    display: block;
-    margin-bottom: 0.25rem;
-    color: var(--secondary-text-color);
-    font-size: 0.875rem;
-  }
-  
-  /* Lista de permisos */
-  .permissions-container {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--background-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 0.375rem;
-  }
-  
-  /* Encabezado de permisos */
-  .permissions-header {
-    font-size: 1.25rem; /* equivalente a text-xl */
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  
-  /* Lista de permisos */
-  .permissions-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .permissions-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--primary-color);
-    color: var(--text-color);
+/* Mantener el botón constante en todos los tamaños de pantalla */
+@media (max-width: 640px) {
+  .save-button {
+    padding: 0.5rem 1rem; /* Mantener tamaño original en móviles */
     font-size: 1rem;
   }
-  
-  /* Botón para cada permiso */
-  .permission-toggle-button {
-    padding: 0.25rem 0.5rem;
-    background-color: #32CD32;
-    color: var(--text-color);
-    border: none;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+}
+
+/* Etiquetas del formulario */
+.user-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--secondary-text-color);
+  font-size: 0.875rem;
+}
+
+/* Lista de permisos */
+.permissions-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 0.375rem;
+}
+
+/* Encabezado de permisos */
+.permissions-header {
+  font-size: 1.25rem; /* equivalente a text-xl */
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Lista de permisos */
+.permissions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.permissions-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--primary-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Botón para cada permiso */
+.permission-toggle-button {
+  padding: 0.25rem 0.5rem;
+  background-color: #32cd32;
+  color: var(--text-color);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.875rem;
+}
+
+.permission-toggle-button:hover {
+  background-color: var(--primary-color);
+}
+
+/* Media Queries para Responsividad */
+
+/* Para pantallas pequeñas (móviles) */
+@media (max-width: 640px) {
+  .user-page-container {
+    padding: 0.5rem;
+  }
+
+  .user-title {
+    font-size: 1.5rem; /* texto más pequeño en móviles */
+  }
+
+  .user-form {
+    padding: 0.75rem;
+  }
+
+  .permissions-header {
+    font-size: 1.125rem; /* texto más pequeño en móviles */
+  }
+
+  .permissions-list-item {
     font-size: 0.875rem;
   }
-  
-  .permission-toggle-button:hover {
-    background-color: #28a745;
+
+  .permission-toggle-button {
+    padding: 0.25rem;
+    font-size: 0.75rem;
   }
-  
-  /* Media Queries para Responsividad */
-  
-  /* Para pantallas pequeñas (móviles) */
-  @media (max-width: 640px) {
-    .user-page-container {
-      padding: 0.5rem;
-    }
-  
-    .user-title {
-      font-size: 1.5rem; /* texto más pequeño en móviles */
-    }
-  
-    .user-form {
-      padding: 0.75rem;
-    }
-  
-    .permissions-header {
-      font-size: 1.125rem; /* texto más pequeño en móviles */
-    }
-  
-    .permissions-list-item {
-      font-size: 0.875rem;
-    }
-  
-    .permission-toggle-button {
-      padding: 0.25rem;
-      font-size: 0.75rem;
-    }
-  }
-  
-  /* Para tablets (pantallas medianas) */
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .user-form {
-      padding: 1.25rem;
-    }
-  
-    .permissions-container {
-      padding: 1.25rem;
-    }
-  
-    .permissions-header {
-      font-size: 1.5rem;
-    }
+}
+
+/* Para tablets (pantallas medianas) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .user-form {
+    padding: 1.25rem;
   }
 
+  .permissions-container {
+    padding: 1.25rem;
+  }
 
-  /* Estilos para la dashboard */
+  .permissions-header {
+    font-size: 1.5rem;
+  }
+}
+
+/* Estilos para la dashboard */
 /* custom-styles.css */
 
 /* custom-styles.css */
@@ -221,14 +217,14 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 /* Títulos */
 .title {
   font-size: 2rem; /* text-3xl */
   font-weight: bold;
-  color: #00993D;
+  color: var(--primary-color);
   margin-bottom: 2rem; /* mb-8 */
 }
 
@@ -271,18 +267,18 @@
 
 /* Tarjetas */
 .card {
-  background-color: #2C2C2C; /* bg-gray-800 */
+  background-color: #2c2c2c; /* bg-gray-800 */
   border-radius: 0.5rem; /* rounded-lg */
   padding: 1.5rem; /* p-6 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 /* Texto en tarjetas */
 .card-title {
   font-size: 1.25rem; /* text-xl */
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
@@ -292,19 +288,19 @@
 }
 
 .text-green {
-  color: #00C950;
+  color: #00c950;
 }
 
 .text-blue {
-  color: #0088FE;
+  color: #0088fe;
 }
 
 .text-yellow {
-  color: #FFBB28;
+  color: #ffbb28;
 }
 
 .text-purple {
-  color: #A855F7;
+  color: #a855f7;
 }
 
 /* Contenedor de gráficos */
@@ -340,82 +336,3 @@
     padding: 0 32px; /* lg:px-8 */
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

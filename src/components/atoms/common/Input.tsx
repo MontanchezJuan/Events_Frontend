@@ -1,6 +1,6 @@
 import { forwardRef, InputHTMLAttributes, useState } from "react";
-import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { Size, SizeInputs } from "../../../interfaces/Size.interfaces";
+import { PasswordToggle } from "./PasswordToggle";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize?: Size;
@@ -8,27 +8,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const getClassNames = (inputSize: Size, className: string, error?: string) => {
-  const defaultClassName = "border rounded-lg w-[240px]";
-  return `${defaultClassName} ${SizeInputs[inputSize]} ${className} ${
+  const defaultClassName =
+    "border rounded-lg w-[240px] bg-transparent text-white";
+  return `${className} ${defaultClassName} ${SizeInputs[inputSize]} ${
     error ? "border-red-700" : "border-white"
   }`;
 };
-
-const PasswordToggle = ({
-  showPassword,
-  toggleVisibility,
-}: {
-  showPassword: boolean;
-  toggleVisibility: () => void;
-}) => (
-  <button
-    type="button"
-    onClick={toggleVisibility}
-    className="absolute right-2 top-1/3 text-white"
-  >
-    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-  </button>
-);
 
 const InputPassword = forwardRef<HTMLInputElement, InputProps>(
   ({ inputSize = "md", className = "", error, ...props }, ref) => {
@@ -72,25 +57,11 @@ const NormalInput = forwardRef<HTMLInputElement, InputProps>(
 );
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ error, ...props }, ref) => {
+  ({ ...props }, ref) => {
     if (props.type === "password") {
-      return (
-        <InputPassword
-          ref={ref}
-          className="bg-transparent text-white"
-          error={error}
-          {...props}
-        />
-      );
+      return <InputPassword ref={ref} {...props} />;
     }
 
-    return (
-      <NormalInput
-        ref={ref}
-        className="bg-transparent text-white"
-        error={error}
-        {...props}
-      />
-    );
+    return <NormalInput ref={ref} {...props} />;
   },
 );

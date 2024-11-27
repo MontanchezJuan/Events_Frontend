@@ -36,7 +36,7 @@ export const login = async ({
     }
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
-    Alert({ message: errorMessage });
+    Alert({ text: errorMessage });
     console.error("Error al hacer login:", e);
   } finally {
     setState(false);
@@ -68,12 +68,12 @@ export const sign_up = async ({
         icon: "success",
         title: "Todo correcto",
       }).then(() => {
-        navigate(PUBLICROUTES.LOGIN);
+        navigate(PUBLICROUTES.Login);
       });
     }
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
-    Alert({ message: errorMessage });
+    Alert({ text: errorMessage });
     console.error("Error al hacer sign-up:", e);
   } finally {
     setState(false);

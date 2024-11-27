@@ -1,6 +1,6 @@
 import React from "react";
-import { MdLogout } from "react-icons/md";
-import { UnderlineText } from "../../atoms/common/UnderlineText";
+import { MdAccountCircle, MdLogout, MdOutlinePeople } from "react-icons/md";
+import useStore from "../../../store/useStore";
 
 interface AccountMenuProps {
   onProfile: () => void;
@@ -8,33 +8,49 @@ interface AccountMenuProps {
 }
 
 export const AccountMenu = React.memo(
-  ({ onLogout, onProfile }: AccountMenuProps) => (
-    <div className="absolute right-0 top-full flex min-w-[200px] flex-col gap-2 rounded bg-white p-2 text-sm text-black">
-      <section className="flex items-center gap-2">
-        <img
-          className="rounded-full"
-          width={36}
-          height={36}
-          src="https://ritmo95.sbs.co/wp-content/uploads/sites/4/2018/09/Ozuna-090518.jpg"
-          alt="juan"
-        />
-        <span className="text-lg">Juan Montanchez</span>
-      </section>
+  ({ onLogout, onProfile }: AccountMenuProps) => {
+    const profilePhoto = useStore(
+      (store) => store.user.userProfile.profilePhoto,
+    );
+    const name = useStore((store) => store.user.userProfile.name);
+    const email = useStore((store) => store.user.email);
 
-      <div className="flex justify-center">
-        <UnderlineText
-          color="after:bg-zinc-900"
+    return (
+      <div className="absolute right-0 top-full flex min-w-[240px] flex-col gap-2 rounded bg-white p-2 text-sm text-black">
+        <section className="flex select-none items-center gap-2">
+          {profilePhoto ? (
+            <img
+              className="rounded-full"
+              style={{
+                width: "40px",
+                height: "40px",
+                objectFit: "cover",
+                display: "block",
+                margin: "0 auto",
+              }}
+              src={profilePhoto}
+              alt={name || "profile picture"}
+            />
+          ) : (
+            <MdOutlinePeople />
+          )}
+          <span className="text-lg font-bold">{name ? name : email}</span>
+        </section>
+
+        <div
+          className="flex cursor-pointer items-center justify-center gap-1 font-medium hover:text-[#00ff66]"
           onClick={onProfile}
-          text="Ver perfil"
-        />
-      </div>
+        >
+          <MdAccountCircle className="text-lg" /> Ver perfil
+        </div>
 
-      <UnderlineText
-        color="after:bg-zinc-900"
-        onClick={onLogout}
-        text="Cerrar Sesión"
-        icon={<MdLogout />}
-      />
-    </div>
-  ),
+        <div
+          className="flex cursor-pointer items-center gap-1 font-medium hover:text-[#00ff66]"
+          onClick={onLogout}
+        >
+          <MdLogout /> Cerrar Sesión
+        </div>
+      </div>
+    );
+  },
 );

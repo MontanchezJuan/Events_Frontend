@@ -32,7 +32,7 @@ export const isTokenExpired = (token: string | null): boolean => {
     return now > exp;
   } catch (e) {
     // Si ocurre un error, consideramos que el token ha expirado
-    Alert({ message: "Error al procesar los datos del token" });
+    Alert({ text: "Error al procesar los datos del token" });
     console.error("Error al decodificar el token:", e);
     localStorage.removeItem("token");
     return true;

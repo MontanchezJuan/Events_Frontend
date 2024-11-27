@@ -1,40 +1,31 @@
 import React from "react";
 import { AiOutlineCalendar } from "react-icons/ai";
+import { Event } from "../../../api/interfaces/event";
 import { PrimaryButton } from "../../atoms/common/Button";
 import "./EventCard.css";
 
 interface EventCardProps {
-  title: string;
-  description: string;
-  date: string;
-  categories: string[];
-  imageUrl: string;
-  site: string;
+  event: Event;
   onRegister: () => void;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
-  title,
-  description,
-  date,
-  categories,
-  imageUrl,
-  site,
-  onRegister,
-}) => {
+const EventCard: React.FC<EventCardProps> = ({ event, onRegister }) => {
+  const { name, date, categories, image, site } = event;
   return (
     <div className="event-card">
       <div className="content">
         {/* Parte trasera */}
         <div className="back">
           <div className="back-content">
-            <h2 className="title">{title}</h2>
-            <p className="description">{description}</p>
+            <h2 className="title">{name}</h2>
             <p className="date">
               <AiOutlineCalendar /> {date}
             </p>
+            <p className="site mb-4">{site}</p>
             <div className="flex w-full justify-center">
-              <PrimaryButton onClick={onRegister}>Registrarse</PrimaryButton>
+              <PrimaryButton onClick={onRegister}>
+                Visualizar evento
+              </PrimaryButton>
             </div>
           </div>
         </div>
@@ -42,12 +33,14 @@ const EventCard: React.FC<EventCardProps> = ({
         {/* Parte frontal */}
         <div className="front">
           <div className="img">
-            <img src={imageUrl} alt={title} className="image" />
+            <img src={image} alt={name} className="image" />
           </div>
           <div className="front-content">
             <small className="badge">{categories.join(", ")}</small>
-            <h2 className="title">{title}</h2>
-            <p className="site">{site}</p> {/* Nuevo elemento del sitio web */}
+            <h2 className="title">{name}</h2>
+            <p className="date">
+              <AiOutlineCalendar /> {date}
+            </p>
           </div>
         </div>
       </div>
