@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Event } from "../../api/interfaces/event";
+import { list_my_events } from "../../api/services/eventsService";
 import MainLayout from "../../components/templates/MainLayout";
 
 export default function CalendarPage() {
   const [dates, setDates] = useState<Date[]>([]);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [events, setEvents] = useState<Event[] | null>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const parseDate = (dateString: string): string => {
+    const [day, month, year] = dateString.split("/");
+    return `${day}-${month}-${year}`;
+  };
 
   // Función para generar las fechas del mes
   const generateDates = (year: number, month: number) => {
@@ -17,12 +29,52 @@ export default function CalendarPage() {
     setDates(daysInMonth);
   };
 
+  const get_events = async () => {
+    const eventsList = await list_my_events({
+      params: {
+        date: `/${Number(month) + 1}/${year}`,
+      },
+      setState: setIsLoading,
+    });
+
+    setEvents(eventsList);
+  };
+
   // Actualizar las fechas cuando el mes o año cambien
   useEffect(() => {
     generateDates(year, month);
+    get_events();
   }, [month, year]);
 
-  const today = new Date().toLocaleDateString();
+  const handleOnClick = (currentEvent: Event | null | undefined) => {
+    if (currentEvent) {
+      navigate(`/events/my-events/${parseDate(currentEvent.date)}`);
+    }
+  };
+
+  const daysWithEvents = useMemo(
+    () =>
+      dates.map((date) => {
+        const thisDay = date.toLocaleDateString();
+        const currentEvent =
+          events && events.find((event) => event.date === thisDay);
+
+        return (
+          <button
+            key={`${date}`}
+            className={`rounded-lg py-6 ${
+              currentEvent
+                ? "bg-[#00ff66] text-white"
+                : "bg-gray-100 text-black hover:bg-gray-200"
+            } `}
+            onClick={() => handleOnClick(currentEvent)}
+          >
+            {date.getDate()}
+          </button>
+        );
+      }),
+    [dates, events],
+  );
 
   return (
     <MainLayout>
@@ -84,21 +136,7 @@ export default function CalendarPage() {
             ))}
 
             {/* Días del mes */}
-            {dates.map((date) => {
-              const isToday = date.toLocaleDateString() === today;
-              return (
-                <div
-                  key={`${date}`}
-                  className={`rounded-lg p-2 ${
-                    isToday
-                      ? "bg-[#00ff66] text-white"
-                      : "bg-gray-100 text-black hover:bg-gray-200"
-                  }`}
-                >
-                  {date.getDate()}
-                </div>
-              );
-            })}
+            {daysWithEvents}
           </div>
         </div>
       </div>

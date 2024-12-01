@@ -8,11 +8,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const getClassNames = (inputSize: Size, className: string, error?: string) => {
-  const defaultClassName =
-    "border rounded-lg w-[240px] bg-transparent text-white";
-  return `${className} ${defaultClassName} ${SizeInputs[inputSize]} ${
-    error ? "border-red-700" : "border-white"
-  }`;
+  const baseW = "w-[240px]";
+  const errorClassName = error ? "border-red-700" : "border-white";
+
+  return `${className.includes("w-") ? className : `${className} ${baseW}`}  ${errorClassName} border rounded-lg bg-transparent text-white focus:outline-none focus:border-[#00ff66] focus:ring-1 focus:ring-[#00ff66] ${SizeInputs[inputSize]} `;
 };
 
 const InputPassword = forwardRef<HTMLInputElement, InputProps>(
@@ -48,7 +47,7 @@ const NormalInput = forwardRef<HTMLInputElement, InputProps>(
   ({ inputSize = "md", className = "", error, ...props }, ref) => {
     const appliedClassName = getClassNames(
       inputSize,
-      `${" px-4 py-2 " + className}`,
+      `px-4 py-2 ${className}`,
       error,
     );
 

@@ -17,14 +17,14 @@ export default function EventPage() {
 
   const { id } = useParams<RouteParams>();
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      if (id) {
-        setEvent(await event_by_id({ id, setState: setIsLoading }));
-      }
-    };
+  const fetchId = async () => {
+    if (id) {
+      setEvent(await event_by_id({ id, setState: setIsLoading }));
+    }
+  };
 
-    fetchEvent();
+  useEffect(() => {
+    fetchId();
   }, [id]);
 
   return (

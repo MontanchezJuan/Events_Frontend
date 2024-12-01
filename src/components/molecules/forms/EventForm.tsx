@@ -47,16 +47,7 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
     resolver: yupResolver(EventFormSchema),
     defaultValues: initialValues
       ? { ...initialValues, date: parseDate(initialValues.date) }
-      : {
-          categories: [],
-          date: "",
-          description: "",
-          entity: "",
-          image: "",
-          name: "",
-          restrictions: [],
-          site: "",
-        },
+      : {},
   });
 
   const addCategory = () => {
@@ -190,10 +181,16 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
       type: "date",
       error: errors.date?.message,
     },
+    {
+      placeholder: "Hora",
+      name: "time",
+      type: "time",
+      error: errors.time?.message,
+    },
   ];
 
   return (
-    <div className="flex min-w-full flex-col gap-12 md:flex-row">
+    <div className="flex flex-col min-w-full gap-12 md:flex-row">
       {image ? (
         <img
           className="w-full md:w-1/2"

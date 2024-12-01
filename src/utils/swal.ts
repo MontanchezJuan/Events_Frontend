@@ -2,7 +2,6 @@ import Swal, { SweetAlertOptions } from "sweetalert2";
 
 export const Alert = ({
   icon = "error",
-  text,
   title = "Error",
   ...props
 }: SweetAlertOptions) =>
@@ -12,7 +11,6 @@ export const Alert = ({
     iconColor: "#00ff66",
     denyButtonColor: "#FF9F00",
     title,
-    text,
     icon,
     ...props,
   });

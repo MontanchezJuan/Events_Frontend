@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react";
 import { MdLogout } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import { USERROUTES } from "../../../routes/User.routes";
 import useStore from "../../../store/useStore";
 import { UnderlineText } from "../../atoms/common/UnderlineText";
 import { ProfileButton } from "../common/ProfileButton";
@@ -8,12 +10,15 @@ import { AccountMenu } from "./AccountMenu";
 
 export const AccountNavItem = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
   const closeMenu = useCallback(() => {
     setShowMenu(false);
   }, []);
 
   const handleProfileClick = useCallback(() => {
-    alert("Ir al perfil");
+    navigate(USERROUTES.MyProfile);
   }, []);
 
   const handleLogoutClick = useCallback(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
+import { AiFillCalendar } from "react-icons/ai";
 import {
-  MdCalendarMonth,
   MdCategory,
   MdHomeFilled,
   MdHomeWork,
@@ -155,7 +155,7 @@ export default function ViewEventPage() {
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">Información general</p>
                 <Item Icon={MdHomeWork}>Entidad: {event.entity}</Item>
-                <Item Icon={MdCalendarMonth}>Fecha: {event.date}</Item>
+                <Item Icon={AiFillCalendar}>Fecha: {event.date}</Item>
                 <Item Icon={MdLocationOn}>Lugar: {event.site}</Item>
                 {event.categories.length > 0 && (
                   <Item Icon={MdCategory}>

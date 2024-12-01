@@ -1,5 +1,5 @@
 import React from "react";
-import { MdAccountCircle, MdLogout, MdOutlinePeople } from "react-icons/md";
+import { MdAccountCircle, MdLogout } from "react-icons/md";
 import useStore from "../../../store/useStore";
 
 interface AccountMenuProps {
@@ -9,16 +9,12 @@ interface AccountMenuProps {
 
 export const AccountMenu = React.memo(
   ({ onLogout, onProfile }: AccountMenuProps) => {
-    const profilePhoto = useStore(
-      (store) => store.user.userProfile.profilePhoto,
-    );
-    const name = useStore((store) => store.user.userProfile.name);
-    const email = useStore((store) => store.user.email);
+    const user = useStore((store) => store.user);
 
     return (
       <div className="absolute right-0 top-full flex min-w-[240px] flex-col gap-2 rounded bg-white p-2 text-sm text-black">
-        <section className="flex select-none items-center gap-2">
-          {profilePhoto ? (
+        <section className="flex items-center gap-2 select-none">
+          {user.userProfile ? (
             <img
               className="rounded-full"
               style={{
@@ -28,13 +24,15 @@ export const AccountMenu = React.memo(
                 display: "block",
                 margin: "0 auto",
               }}
-              src={profilePhoto}
-              alt={name || "profile picture"}
+              src={user.userProfile.profilePhoto}
+              alt={user.userProfile.name || "profile picture"}
             />
           ) : (
-            <MdOutlinePeople />
+            <MdAccountCircle style={{ width: "40px", height: "40px" }} />
           )}
-          <span className="text-lg font-bold">{name ? name : email}</span>
+          <span className="text-lg font-bold">
+            {user.userProfile ? user.userProfile.name : user.email}
+          </span>
         </section>
 
         <div

@@ -5,9 +5,14 @@ export enum ADMINROUTES {
   HOME = "/",
   EVENT = "/event/:id?",
   EVENTS = "/list-events",
-  INSCRIPTION = "/inscription/:id?",
-  INSCRIPTIONS = "/list-inscriptions",
+  INSCRIPTIONS = "/list-inscriptions/:idEvent",
+  MY_PROFILE = "/my-profile",
+  PERMISSION = "/permission/:id?",
+  PERMISSIONS = "/list-permissions",
   PROFILE = "/profile/:id?",
+  PROFILES = "/list-profiles",
+  ROLE = "/role/:id?",
+  ROLES = "/list-roles",
   USER = "/user/:id?",
   USERS = "/list-users",
 }
@@ -28,16 +33,36 @@ export const AdminRoutes: Route[] = [
     path: ADMINROUTES.EVENTS,
   },
   {
-    component: lazy(() => import("../pages/admin/InscriptionPage")),
-    path: ADMINROUTES.INSCRIPTION,
-  },
-  {
     component: lazy(() => import("../pages/admin/ListInscriptionsPage")),
     path: ADMINROUTES.INSCRIPTIONS,
   },
   {
-    component: lazy(() => import("../pages/admin/AdminProfile")),
+    component: lazy(() => import("../pages/common/MyProfilePage")),
+    path: ADMINROUTES.MY_PROFILE,
+  },
+  {
+    component: lazy(() => import("../pages/admin/PermissionPage")),
+    path: ADMINROUTES.PERMISSION,
+  },
+  {
+    component: lazy(() => import("../pages/admin/ListPermissionsPage")),
+    path: ADMINROUTES.PERMISSIONS,
+  },
+  {
+    component: lazy(() => import("../pages/admin/ProfilePage")),
     path: ADMINROUTES.PROFILE,
+  },
+  {
+    component: lazy(() => import("../pages/admin/ListProfilesPage")),
+    path: ADMINROUTES.PROFILES,
+  },
+  {
+    component: lazy(() => import("../pages/admin/RolePage")),
+    path: ADMINROUTES.ROLE,
+  },
+  {
+    component: lazy(() => import("../pages/admin/ListRolesPage")),
+    path: ADMINROUTES.ROLES,
   },
   {
     component: lazy(() => import("../pages/admin/UserPage")),

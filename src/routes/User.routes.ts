@@ -5,7 +5,9 @@ export enum USERROUTES {
   Landing = "/",
   Calendar = "/calendar",
   Certifications = "/certifications",
-  MyEvents = "/events/my-events",
+  MyEvents = "/events/my-events/:date?",
+  MyProfile = "/my-profile",
+  Profile = "/profile/:id?",
   ViewEvent = "/events/event/:id?",
 }
 
@@ -27,6 +29,14 @@ export const UserRoutes: Route[] = [
   {
     component: lazy(() => import("../pages/user/MyEventsPage")),
     path: USERROUTES.MyEvents,
+  },
+  {
+    component: lazy(() => import("../pages/common/MyProfilePage")),
+    path: USERROUTES.MyProfile,
+  },
+  {
+    component: lazy(() => import("../pages/admin/ProfilePage")),
+    path: USERROUTES.Profile,
   },
   {
     component: lazy(() => import("../pages/common/ViewEventPage")),

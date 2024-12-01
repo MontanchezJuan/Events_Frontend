@@ -1,74 +1,109 @@
 import { useEffect, useState } from "react";
-import { MdCreate, MdDelete } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { Tooltip } from "react-tooltip";
-import { Inscription } from "../../api/interfaces/inscription";
-import { list_inscriptions } from "../../api/services/inscriptionsService";
-import { PrimaryButton } from "../../components/atoms/common/Button";
+import { MdOutlinePeople } from "react-icons/md";
+import { useParams } from "react-router-dom";
+import { UserEvent } from "../../api/interfaces/user";
+import { list_events_users } from "../../api/services/eventsService";
+import { update_inscription } from "../../api/services/inscriptionsService";
+import { GoBack } from "../../components/atoms/common/GoBack";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
-import { TableButton } from "../../components/atoms/common/TableButton";
 import { TableColumn } from "../../components/atoms/common/TableColumn";
 import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
+import { Alert } from "../../utils/swal";
+
+interface RouteParams extends Record<string, string | undefined> {
+  idEvent: string;
+}
 
 export default function ListInscriptionsPage() {
-  const [inscriptions, setInscriptions] = useState<Inscription[]>([]);
+  const [inscriptions, setInscriptions] = useState<UserEvent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+
+  const plural = "inscripciones";
+
+  const { idEvent } = useParams<RouteParams>();
+
+  const get_inscriptions = async () => {
+    if (idEvent) {
+      setInscriptions(
+        await list_events_users({ id: idEvent, setState: setIsLoading }),
+      );
+    }
+  };
 
   useEffect(() => {
-    const get_users = async () => {
-      const userList = await list_inscriptions({ setState: setIsLoading });
-
-      setInscriptions(userList);
-    };
-
-    get_users();
+    get_inscriptions();
   }, []);
+
+  const handleInscription = async (id: string) => {
+    const res = await update_inscription({
+      id,
+      setState: setIsLoading,
+    });
+
+    if (res) {
+      Alert({ text: res, icon: "success", title: "Ok" });
+    }
+  };
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl">Inscripciones</h1>
+      <GoBack />
 
-      <div className="flex w-full justify-end">
-        <PrimaryButton onClick={() => navigate("/inscription/")}>
-          Añadir inscripción
-        </PrimaryButton>
-      </div>
+      <h1 className="text-2xl capitalize">{plural}</h1>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<Inscription>
+        <Table<UserEvent>
           data={inscriptions}
-          ignoreElements={["_id"]}
-          itemsPerPage={3}
+          ignoreElements={["user_id", "inscription_id"]}
         >
-          <TableColumn<Inscription> key="_id" dataIndex="" title="Correo" />
-          <TableColumn<Inscription> key="_id" dataIndex="" title="Rol" />
-          <TableColumn
-            key="_id"
-            dataIndex="actions"
-            title="Acciones"
+          <TableColumn<UserEvent>
+            key="user_id"
+            dataIndex="image"
+            title="Foto"
+            className="p-0"
             textCenter
-            render={({ _id }) => (
-              <div className="flex min-h-full items-center justify-center gap-2">
-                <TableButton
-                  color="blue"
-                  onClick={() => navigate(`/inscription/${_id}`)}
-                  rounded
-                  data-tooltip-id="edit"
-                >
-                  <MdCreate />
-                  <Tooltip id="edit" place="top">
-                    Editar inscripción
-                  </Tooltip>
-                </TableButton>
-                <TableButton color="red" rounded data-tooltip-id="delete">
-                  <MdDelete />
-                  <Tooltip id="delete" place="top">
-                    Eliminar inscripción
-                  </Tooltip>
-                </TableButton>
-              </div>
+            render={({ image, name }) => {
+              if (image) {
+                return (
+                  <img
+                    className="rounded-full"
+                    style={{
+                      width: "64px",
+                      height: "64px",
+                      objectFit: "cover",
+                      display: "block",
+                      margin: "0 auto",
+                    }}
+                    src={image}
+                    alt={name || "profile picture"}
+                  />
+                );
+              }
+
+              return <MdOutlinePeople />;
+            }}
+          />
+          <TableColumn<UserEvent>
+            key="user_id"
+            dataIndex="name"
+            title="Nombre"
+          />
+          <TableColumn<UserEvent>
+            key="user_id"
+            dataIndex="email"
+            title="Correo"
+          />
+          <TableColumn<UserEvent>
+            key="user_id"
+            dataIndex="participated"
+            title="Participación"
+            render={({ participated, inscription_id }) => (
+              <input
+                type="checkbox"
+                defaultChecked={participated}
+                onChange={() => handleInscription(inscription_id)}
+              />
             )}
           />
         </Table>

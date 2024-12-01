@@ -10,11 +10,12 @@ export const EventFormSchema = yup.object({
   entity: yup.string().required("La entidad es obligatoria."),
   image: yup.string().url("La imagen debe ser una URL válida."),
   name: yup.string().required("El nombre es obligatorio."),
+  site: yup.string().required("El sitio es obligatorio."),
+  time: yup.string().required("La hora es obligatoria."),
   restrictions: yup
     .array()
     .of(
       yup.string().required("Cada restricción debe ser una cadena de texto."),
     ),
-  site: yup.string().required("El sitio es obligatorio."),
 });
 export type EventFormData = yup.InferType<typeof EventFormSchema>;

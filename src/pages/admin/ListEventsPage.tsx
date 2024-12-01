@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MdCreate, MdDelete } from "react-icons/md";
+import { MdCreate, MdDelete, MdPeople } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { Event } from "../../api/interfaces/event";
@@ -17,23 +17,24 @@ export default function ListEventsPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const get_events = async () => {
-    const userList = await list_events({ setState: setIsLoading });
+  const singular = "evento";
+  const plural = "eventos";
+  const route = "event";
 
-    setEvents(userList);
-  };
+  const get_events = async () =>
+    setEvents(await list_events({ setState: setIsLoading }));
 
   useEffect(() => {
     get_events();
   }, []);
 
-  const deleteEvent = (id: string) => {
+  const handleDelete = (id: string) => {
     Alert({
       cancelButtonText: "Cancelar",
-      confirmButtonText: "Sí, eliminar evento",
+      confirmButtonText: `Sí, eliminar ${singular}`,
       icon: "question",
       showCancelButton: true,
-      text: `Deseas eliminar este evento?`,
+      text: `Deseas eliminar este ${singular}?`,
       title: "Alerta",
     }).then(({ isConfirmed }) => {
       if (isConfirmed) {
@@ -52,45 +53,40 @@ export default function ListEventsPage() {
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl">Eventos</h1>
+      <h1 className="text-2xl capitalize">{plural}</h1>
 
-      <div className="flex w-full justify-end">
-        <PrimaryButton onClick={() => navigate("/event/")}>
-          Añadir evento
+      <div className="flex justify-end w-full">
+        <PrimaryButton onClick={() => navigate(`/${route}/`)}>
+          Añadir {singular}
         </PrimaryButton>
       </div>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<Event> data={events} ignoreElements={["_id"]} itemsPerPage={5}>
+        <Table<Event> data={events} ignoreElements={["_id"]}>
           <TableColumn<Event>
             key="_id"
             dataIndex="image"
             title="Imagen"
             textCenter
+            className="p-0"
             render={({ image, name }) => (
-              <img className="w-h-20 h-20" src={image} alt={name} />
+              <img className="h-20 w-h-20" src={image} alt={name} />
             )}
           />
           <TableColumn<Event> key="_id" dataIndex="name" title="Nombre" />
           <TableColumn<Event> key="_id" dataIndex="date" title="Fecha" />
           <TableColumn<Event> key="_id" dataIndex="site" title="Lugar" />
-          {/* <TableColumn<Event>
-          className="flex"
-          key="_id"
-          dataIndex="description"
-          title="Descripción"
-        /> */}
           <TableColumn<Event> key="_id" dataIndex="entity" title="Entidad" />
           <TableColumn<Event>
             key="_id"
             dataIndex="categories"
             title="Categorias"
             render={({ categories }) => (
-              <div className="flex min-h-full items-center justify-center gap-2">
+              <div className="flex items-center justify-center min-h-full gap-2">
                 {categories.map((category, index) => (
                   <div
                     key={index}
-                    className={`${index % 2 === 1 ? "bg-red-700" : "bg-gray-600"} rounded-lg px-2 py-1 text-center text-white`}
+                    className="whitespace-nowrap rounded-lg border border-[#00ff66] px-2 py-1 text-center text-white"
                   >
                     {category}
                   </div>
@@ -104,27 +100,38 @@ export default function ListEventsPage() {
             title="Acciones"
             textCenter
             render={({ _id }) => (
-              <div className="flex min-h-full items-center justify-center gap-2">
+              <div className="flex items-center justify-center min-h-full gap-2">
+                <TableButton
+                  color="green"
+                  onClick={() => navigate(`/list-inscriptions/${_id}`)}
+                  rounded
+                  data-tooltip-id={`view-${_id}`}
+                >
+                  <MdPeople />
+                  <Tooltip id={`view-${_id}`} place="top">
+                    Visualizar inscripciones del {singular}
+                  </Tooltip>
+                </TableButton>
                 <TableButton
                   color="blue"
-                  onClick={() => navigate(`/event/${_id}`)}
+                  onClick={() => navigate(`/${route}/${_id}`)}
                   rounded
-                  data-tooltip-id="edit"
+                  data-tooltip-id={`edit-${_id}`}
                 >
                   <MdCreate />
-                  <Tooltip id="edit" place="top">
-                    Editar evento
+                  <Tooltip id={`edit-${_id}`} place="top">
+                    Editar {singular}
                   </Tooltip>
                 </TableButton>
                 <TableButton
                   color="red"
                   rounded
-                  data-tooltip-id="delete"
-                  onClick={() => deleteEvent(_id)}
+                  data-tooltip-id={`delete-${_id}`}
+                  onClick={() => handleDelete(_id)}
                 >
                   <MdDelete />
-                  <Tooltip id="delete" place="top">
-                    Eliminar evento
+                  <Tooltip id={`delete-${_id}`} place="top">
+                    Eliminar {singular}
                   </Tooltip>
                 </TableButton>
               </div>

@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { MdCreate, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
-import { User } from "../../api/interfaces/user";
-import { delete_user, list_users } from "../../api/services/usersService";
+import { Permission } from "../../api/interfaces/user";
+import {
+  delete_permission,
+  list_permissions,
+} from "../../api/services/permissionsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableButton } from "../../components/atoms/common/TableButton";
@@ -12,20 +15,29 @@ import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
 import { Alert } from "../../utils/swal";
 
-export default function ListUsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
+export default function ListPermissionsPage() {
+  const [permissions, setPermissions] = useState<Permission[] | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const singular = "usuario";
-  const plural = "usuarios";
-  const route = "user";
+  const singular = "permiso";
+  const plural = "permisos";
+  const route = "permission";
 
-  const get_users = async () =>
-    setUsers(await list_users({ setState: setIsLoading }));
+  const excludePatterns = ["/roles/role/?/permission/?"];
+
+  const getPermissions = async () => {
+    const thosePermissions = await list_permissions({
+      setState: setIsLoading,
+    });
+    const finalPermissions = thosePermissions.filter(
+      (thisPermi) => !excludePatterns.includes(thisPermi.route),
+    );
+    setPermissions(finalPermissions);
+  };
 
   useEffect(() => {
-    get_users();
+    getPermissions();
   }, []);
 
   const handleDelete = (id: string) => {
@@ -39,9 +51,9 @@ export default function ListUsersPage() {
     }).then(({ isConfirmed }) => {
       if (isConfirmed) {
         const resquest = async () => {
-          const res = await delete_user({ id, setState: setIsLoading });
+          const res = await delete_permission({ id, setState: setIsLoading });
           if (res) {
-            await get_users();
+            await getPermissions();
             Alert({ text: res, icon: "success", title: "Ok" });
           }
         };
@@ -62,9 +74,15 @@ export default function ListUsersPage() {
       </div>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<User> data={users} ignoreElements={["id", "userProfile"]}>
-          <TableColumn<User> key="id" dataIndex="email" title="Correo" />
-          <TableColumn<User> key="id" dataIndex="role.name" title="Rol" />
+        <Table<Permission> data={permissions} ignoreElements={["id", "status"]}>
+          <TableColumn<Permission> key="id" dataIndex="method" title="Metodo" />
+          <TableColumn<Permission> key="id" dataIndex="route" title="Ruta" />
+          <TableColumn<Permission>
+            key="id"
+            className="capitalize"
+            dataIndex="description"
+            title="Descripción"
+          />
           <TableColumn
             key="id"
             dataIndex="actions"

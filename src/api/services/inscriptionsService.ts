@@ -107,21 +107,18 @@ export const create_inscription = async ({
 
 export const update_inscription = async ({
   id,
-  newData,
   setState,
 }: {
   id: string;
-  newData: InscriptionData;
   setState: React.Dispatch<React.SetStateAction<boolean>>;
-}): Promise<Inscription | null> => {
+}): Promise<string | null> => {
   try {
     setState(true);
-    const { data } = await axiosBusiness.put<ResponseData<Inscription>>(
+    const { data } = await axiosBusiness.put<ResponseData<null>>(
       `${INSCRIPTIONS_ENDPOINTS.INSCRIPTION}${id}`,
-      newData,
     );
 
-    return data?.data || null;
+    return data?.message || null;
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
     Alert({ text: errorMessage });

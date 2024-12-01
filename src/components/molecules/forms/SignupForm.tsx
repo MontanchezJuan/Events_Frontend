@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { sign_up } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
+import { PUBLICROUTES } from "../../../routes/Public.routes";
+import { Alert } from "../../../utils/swal";
 import { PrimaryButton } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
-import { Loader } from "../../atoms/common/Loader";
+import { LoaderComponent } from "../../atoms/common/LoaderComponent";
 import { Form } from "../../templates/Form";
 
 const schema = yup
@@ -53,8 +55,22 @@ export const SignupForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: SignupFormData) =>
-    sign_up({ ...data, setState: setIsLoading, navigate });
+  const onSubmit = async (data: SignupFormData) => {
+    const res = await sign_up({
+      newData: { email: data.email, password: data.password },
+      setState: setIsLoading,
+    });
+
+    if (res) {
+      Alert({
+        text: res,
+        icon: "success",
+        title: "Todo correcto",
+      }).then(() => {
+        navigate(PUBLICROUTES.Login);
+      });
+    }
+  };
 
   const formFields: FormField[] = [
     {
@@ -92,7 +108,7 @@ export const SignupForm = () => {
       ))}
 
       <PrimaryButton disabled={isLoading} type="submit" forForm>
-        {isLoading ? <Loader size={20} /> : "Registrarse"}
+        <LoaderComponent isLoading={isLoading}>Registrarse</LoaderComponent>
       </PrimaryButton>
     </Form>
   );

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { MdCreate, MdDelete } from "react-icons/md";
+import { MdCreate, MdDelete, MdOutlinePeople } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
-import { User } from "../../api/interfaces/user";
-import { delete_user, list_users } from "../../api/services/usersService";
+import { UserProfile } from "../../api/interfaces/user";
+import {
+  delete_profile,
+  list_profiles,
+} from "../../api/services/profilesService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableButton } from "../../components/atoms/common/TableButton";
@@ -12,20 +15,24 @@ import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
 import { Alert } from "../../utils/swal";
 
-export default function ListUsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
+export default function ListProfilesPage() {
+  const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const singular = "usuario";
-  const plural = "usuarios";
-  const route = "user";
+  const singular = "perfil";
+  const plural = "perfiles";
+  const route = "profile";
 
-  const get_users = async () =>
-    setUsers(await list_users({ setState: setIsLoading }));
+  const getPermissions = async () =>
+    setProfiles(
+      await list_profiles({
+        setState: setIsLoading,
+      }),
+    );
 
   useEffect(() => {
-    get_users();
+    getPermissions();
   }, []);
 
   const handleDelete = (id: string) => {
@@ -39,9 +46,9 @@ export default function ListUsersPage() {
     }).then(({ isConfirmed }) => {
       if (isConfirmed) {
         const resquest = async () => {
-          const res = await delete_user({ id, setState: setIsLoading });
+          const res = await delete_profile({ id, setState: setIsLoading });
           if (res) {
-            await get_users();
+            await getPermissions();
             Alert({ text: res, icon: "success", title: "Ok" });
           }
         };
@@ -62,9 +69,39 @@ export default function ListUsersPage() {
       </div>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<User> data={users} ignoreElements={["id", "userProfile"]}>
-          <TableColumn<User> key="id" dataIndex="email" title="Correo" />
-          <TableColumn<User> key="id" dataIndex="role.name" title="Rol" />
+        <Table<UserProfile> data={profiles} ignoreElements={["id"]}>
+          <TableColumn<UserProfile>
+            key="id"
+            dataIndex="profilePhoto"
+            title="Foto"
+            className="p-0"
+            textCenter
+            render={({ profilePhoto, name }) => {
+              if (profilePhoto) {
+                return (
+                  <img
+                    className="rounded-full"
+                    style={{
+                      width: "64px",
+                      height: "64px",
+                      objectFit: "cover",
+                      display: "block",
+                      margin: "0 auto",
+                    }}
+                    src={profilePhoto}
+                    alt={name || "profile picture"}
+                  />
+                );
+              }
+
+              return <MdOutlinePeople />;
+            }}
+          />
+          <TableColumn<UserProfile>
+            key="id"
+            dataIndex="name"
+            title="Nombre de usuario"
+          />
           <TableColumn
             key="id"
             dataIndex="actions"

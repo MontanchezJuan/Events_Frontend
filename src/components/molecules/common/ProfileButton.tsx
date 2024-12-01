@@ -1,4 +1,4 @@
-import { MdOutlinePeople } from "react-icons/md";
+import { MdAccountCircle } from "react-icons/md";
 import useStore from "../../../store/useStore";
 
 interface ProfileButtonProps {
@@ -10,15 +10,14 @@ export const ProfileButton = ({
   onClick,
   className = "",
 }: ProfileButtonProps) => {
-  const profilePhoto = useStore((store) => store.user.userProfile.profilePhoto);
-  const name = useStore((store) => store.user.userProfile.name);
+  const user = useStore((store) => store.user);
 
   return (
     <div
       onClick={onClick}
       className={`${className} flex min-w-[120px] cursor-pointer select-none items-center justify-center gap-2 rounded-xl border px-[12px] py-[6px] text-base font-semibold text-white transition-colors duration-700 hover:border-[#00ff66] hover:text-[#00ff66]`}
     >
-      {profilePhoto ? (
+      {user.userProfile ? (
         <img
           className="rounded-full"
           style={{
@@ -28,11 +27,11 @@ export const ProfileButton = ({
             display: "block",
             margin: "0 auto",
           }}
-          src={profilePhoto}
-          alt={name || "profile picture"}
+          src={user.userProfile.profilePhoto}
+          alt={user.userProfile.name || "profile picture"}
         />
       ) : (
-        <MdOutlinePeople />
+        <MdAccountCircle />
       )}
 
       <span>Cuenta</span>

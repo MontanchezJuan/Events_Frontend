@@ -8,7 +8,7 @@ interface Props extends FormHTMLAttributes<HTMLFormElement> {
 export const Form = ({ children, className = "", ...props }: Props) => {
   return (
     <form
-      className={`flex flex-col items-center gap-2 ${className}`}
+      className={`${className} flex flex-col items-center gap-2`}
       {...props}
     >
       {children}

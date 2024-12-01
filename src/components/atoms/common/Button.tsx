@@ -19,7 +19,7 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const defaultClassName =
-    "flex items-center justify-center min-w-[120px] select-none font-semibold";
+    "flex items-center justify-center min-w-[120px] select-none font-semibold text-white";
   const appliedClassName = `${className} ${defaultClassName} ${SizeButtons[size]} ${SizeTexts[size]} ${forForm && "w-[240px]"}`;
 
   return (
@@ -32,7 +32,7 @@ const Button = ({
 export const PrimaryButton = (props: ButtonProps) => {
   return (
     <Button
-      className="bg-[#00ff66] text-zinc-900 transition-colors duration-700 hover:bg-[#00B340]"
+      className="bg-[#00ff66] text-zinc-800 transition-colors duration-700 hover:bg-[#00B340]"
       {...props}
     />
   );
@@ -41,7 +41,7 @@ export const PrimaryButton = (props: ButtonProps) => {
 export const SecondaryButton = (props: ButtonProps) => {
   return (
     <Button
-      className="bg-[#FF9F00] text-zinc-900 transition-colors duration-700 hover:bg-[#FF9F00]"
+      className="bg-[#FF9F00] text-zinc-800 transition-colors duration-700 hover:bg-[#FF9F00]"
       {...props}
     />
   );

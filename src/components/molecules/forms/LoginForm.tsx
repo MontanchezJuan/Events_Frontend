@@ -7,7 +7,7 @@ import { FormField } from "../../../interfaces/Form.interfaces";
 import { PrimaryButton } from "../../atoms/common/Button";
 import { ErrorText } from "../../atoms/common/ErrorText";
 import { Input } from "../../atoms/common/Input";
-import { Loader } from "../../atoms/common/Loader";
+import { LoaderComponent } from "../../atoms/common/LoaderComponent";
 import { Form } from "../../templates/Form";
 
 const schema = yup
@@ -65,7 +65,7 @@ export const LoginForm = () => {
       ))}
 
       <PrimaryButton disabled={isLoading} type="submit" forForm>
-        {isLoading ? <Loader size={20} /> : "Iniciar sesión"}
+        <LoaderComponent isLoading={isLoading}>Iniciar sesión</LoaderComponent>
       </PrimaryButton>
     </Form>
   );

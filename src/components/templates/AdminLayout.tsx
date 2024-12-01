@@ -25,23 +25,29 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     <>
       <div className="relative flex">
         {isSidebarOpen ? (
-          <div className="fixed z-50 w-72 bg-white">
+          <div className="fixed z-50 h-screen bg-white w-72">
             <Sidebar />
           </div>
         ) : (
-          <div className="w-0 bg-white md:w-32">
+          <div className="fixed w-0 h-screen bg-white md:w-32">
             <Sidebar />
           </div>
         )}
 
-        <div className={`${isSidebarOpen && "md:ml-72"} min-h-screen w-full`}>
+        <div
+          className={`min-h-screen w-full ${isSidebarOpen ? "md:pl-[288px]" : "md:pl-[128px]"}`}
+        >
           <Header
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />
 
-          <div className="flex min-h-[calc(100vh_-_60px)] w-full justify-center px-0 py-8 pb-10 md:px-16">
-            <section className="w-full max-w-[1200px] rounded-lg bg-zinc-900 p-4">
+          <div
+            className={`flex min-h-[calc(100vh_-_60px)] w-full justify-center py-8 pb-10`}
+          >
+            <section
+              className={`w-full max-w-[1200px] rounded-lg bg-zinc-900 p-4`}
+            >
               {children}
             </section>
           </div>
