@@ -30,47 +30,55 @@ export const Table = <T extends { [key: string]: any }>({
   }
 
   return (
-    <div className="my-4 overflow-x-auto border rounded-lg border-zinc-800">
-      <table className="min-w-full table-auto text-zinc-900">
-        <thead>
-          <tr className="text-white border-zinc-700">
-            {columnsChildren.map((column, index) => {
-              const { title, textCenter } = column.props;
-              return (
-                <th
-                  key={index}
-                  className={`whitespace-nowrap p-2 capitalize ${!textCenter && "text-left"}`}
-                >
-                  {title}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={index}
-              className={`${index % 2 === 0 && "bg-zinc-800"} text-white`}
-            >
+    <div className="my-4 overflow-x-auto rounded-lg border border-zinc-800">
+      {data.length > 0 ? (
+        <table className="min-w-full table-auto text-zinc-900">
+          <thead>
+            <tr className="border-zinc-700 text-white">
               {columnsChildren.map((column, index) => {
-                const { className, dataIndex, render } = column.props;
-
-                if (ignoreElements.includes(dataIndex)) return null;
-
+                const { title, textCenter } = column.props;
                 return (
-                  <td
+                  <th
                     key={index}
-                    className={`${className?.includes("p-") ? className : `${className} p-2`}`}
+                    className={`whitespace-nowrap p-2 capitalize ${!textCenter && "text-left"}`}
                   >
-                    {render ? render(item) : getNestedValue(item, dataIndex)}
-                  </td>
+                    {title}
+                  </th>
                 );
               })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr
+                key={index}
+                className={`${index % 2 === 0 && "bg-zinc-800"} text-white`}
+              >
+                {columnsChildren.map((column, index) => {
+                  const { className, dataIndex, render } = column.props;
+
+                  if (ignoreElements.includes(dataIndex)) return null;
+
+                  return (
+                    <td
+                      key={index}
+                      className={`${className?.includes("p-") ? className : `${className} p-2`}`}
+                    >
+                      {render ? render(item) : getNestedValue(item, dataIndex)}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="flex flex-col items-center bg-[#00ff66]">
+          <p className="my-4 text-center text-3xl font-semibold">
+            Actualmente no hay información para mostrar
+          </p>
+        </div>
+      )}
     </div>
   );
 };

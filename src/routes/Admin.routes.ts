@@ -3,10 +3,12 @@ import { Route } from "../interfaces/Route.interfaces";
 
 export enum ADMINROUTES {
   HOME = "/",
+  CALENDAR = "/calendar",
   EVENT = "/event/:id?",
-  EVENTS = "/list-events",
+  EVENTS = "/list-events/:date?",
   INSCRIPTIONS = "/list-inscriptions/:idEvent",
   MY_PROFILE = "/my-profile",
+  NOTIFICATIONS = "/send-notifications/:idEvent",
   PERMISSION = "/permission/:id?",
   PERMISSIONS = "/list-permissions",
   PROFILE = "/profile/:id?",
@@ -25,6 +27,10 @@ export const AdminRoutes: Route[] = [
     path: ADMINROUTES.HOME,
   },
   {
+    component: lazy(() => import("../pages/admin/AdminCalendarPage")),
+    path: ADMINROUTES.CALENDAR,
+  },
+  {
     component: lazy(() => import("../pages/admin/EventPage")),
     path: ADMINROUTES.EVENT,
   },
@@ -39,6 +45,10 @@ export const AdminRoutes: Route[] = [
   {
     component: lazy(() => import("../pages/common/MyProfilePage")),
     path: ADMINROUTES.MY_PROFILE,
+  },
+  {
+    component: lazy(() => import("../pages/common/SendNotificationPage")),
+    path: ADMINROUTES.NOTIFICATIONS,
   },
   {
     component: lazy(() => import("../pages/admin/PermissionPage")),

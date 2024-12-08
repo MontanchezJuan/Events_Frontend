@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { AiFillCalendar } from "react-icons/ai";
+import { AiFillCalendar, AiFillClockCircle } from "react-icons/ai";
 import {
   MdCategory,
   MdHomeFilled,
@@ -154,12 +154,21 @@ export default function ViewEventPage() {
             <div className="flex w-1/2 flex-col justify-between p-4">
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">Información general</p>
-                <Item Icon={MdHomeWork}>Entidad: {event.entity}</Item>
-                <Item Icon={AiFillCalendar}>Fecha: {event.date}</Item>
-                <Item Icon={MdLocationOn}>Lugar: {event.site}</Item>
+                <Item Icon={MdHomeWork}>
+                  <strong>Entidad:</strong> {event.entity}
+                </Item>
+                <Item Icon={AiFillCalendar}>
+                  <strong>Fecha:</strong> {event.date}
+                </Item>
+                <Item Icon={AiFillClockCircle}>
+                  <strong>Hora:</strong> {event.time}
+                </Item>
+                <Item Icon={MdLocationOn}>
+                  <strong>Lugar:</strong> {event.site}
+                </Item>
                 {event.categories.length > 0 && (
                   <Item Icon={MdCategory}>
-                    Categorias:
+                    <strong>Categorias:</strong>
                     {event.categories.map((category, index) => (
                       <div
                         key={index}
@@ -172,7 +181,7 @@ export default function ViewEventPage() {
                 )}
                 {event.restrictions.length > 0 && (
                   <Item Icon={MdWarning}>
-                    Restricciones:
+                    <strong>Restricciones:</strong>
                     {event.restrictions.map((category, index) => (
                       <div
                         key={index}

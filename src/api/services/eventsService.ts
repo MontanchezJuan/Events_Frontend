@@ -11,7 +11,13 @@ export const list_events = async ({
   params,
   setState,
 }: {
-  params?: { name?: string; categories?: string; site?: string; date?: string };
+  params?: {
+    name?: string;
+    categories?: string;
+    site?: string;
+    date?: string;
+    organizer_id?: string;
+  };
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<Event[] | []> => {
   try {
@@ -62,7 +68,7 @@ export const list_my_events = async ({
   params,
   setState,
 }: {
-  params?: { date?: string };
+  params?: { date?: string; participated?: boolean };
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<Event[] | null> => {
   try {

@@ -160,7 +160,10 @@ export default function MyEventsPage() {
               )}
             </div>
           ) : (
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center gap-4">
+              <p className="my-4 text-center text-3xl font-semibold">
+                Actualmente no hay información para mostrar
+              </p>
               <PrimaryButton onClick={navigateHome}>
                 <MdSearch /> Encontrar eventos
               </PrimaryButton>

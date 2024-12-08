@@ -51,7 +51,7 @@ const createUserSlice: StateCreator<UserSlice> = (set) => ({
         set(() => ({
           user: initialUser,
         }));
-        console.log("Error en checkAndLoadUser:", error);
+        console.error("Error en checkAndLoadUser:", error);
       }
     }
   },

@@ -190,7 +190,7 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
   ];
 
   return (
-    <div className="flex flex-col min-w-full gap-12 md:flex-row">
+    <div className="flex min-w-full flex-col gap-12 md:flex-row">
       {image ? (
         <img
           className="w-full md:w-1/2"

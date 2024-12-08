@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../../api/interfaces/event";
-import { list_my_events } from "../../api/services/eventsService";
+import { list_events } from "../../api/services/eventsService";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
-import MainLayout from "../../components/templates/MainLayout";
+import AdminLayout from "../../components/templates/AdminLayout";
 
-export default function CalendarPage() {
+export default function AdminCalendarPage() {
   const [dates, setDates] = useState<Date[]>([]);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
@@ -31,7 +31,7 @@ export default function CalendarPage() {
   };
 
   const get_events = async () => {
-    const eventsList = await list_my_events({
+    const eventsList = await list_events({
       params: {
         date: `/${Number(month) + 1}/${year}`,
       },
@@ -47,9 +47,18 @@ export default function CalendarPage() {
     get_events();
   }, [month, year]);
 
-  const handleOnClick = (currentEvent: Event | null | undefined) => {
+  const handleOnClick = ({
+    currentEvent,
+    thisDay,
+  }: {
+    currentEvent?: Event | null;
+    thisDay: string;
+  }) => {
     if (currentEvent) {
-      navigate(`/events/my-events/${parseDate(currentEvent.date)}`);
+      navigate(`/list-events/${parseDate(currentEvent.date)}`);
+    } else if (thisDay) {
+      // navigate(`/event?date=${parseDate(thisDay)}`);
+      navigate(`/event/`, { state: { date: thisDay } });
     }
   };
 
@@ -68,7 +77,7 @@ export default function CalendarPage() {
                 ? "bg-[#00ff66] text-white"
                 : "bg-gray-100 text-black hover:bg-gray-200"
             } `}
-            onClick={() => handleOnClick(currentEvent)}
+            onClick={() => handleOnClick({ currentEvent, thisDay })}
           >
             {date.getDate()}
           </button>
@@ -78,7 +87,7 @@ export default function CalendarPage() {
   );
 
   return (
-    <MainLayout>
+    <AdminLayout>
       <div className="p-4">
         <h1 className="mb-4 text-center text-5xl font-bold">Calendario</h1>
         <div className="rounded-lg bg-zinc-500 p-4">
@@ -143,6 +152,6 @@ export default function CalendarPage() {
           </LoaderComponent>
         </div>
       </div>
-    </MainLayout>
+    </AdminLayout>
   );
 }

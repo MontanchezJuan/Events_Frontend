@@ -1,52 +1,39 @@
 import { useEffect, useState } from "react";
 import { MdCreate, MdDelete, MdNotifications, MdPeople } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { Event } from "../../api/interfaces/event";
 import { delete_event, list_events } from "../../api/services/eventsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
-import { GoBack } from "../../components/atoms/common/GoBack";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableButton } from "../../components/atoms/common/TableButton";
 import { TableColumn } from "../../components/atoms/common/TableColumn";
 import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
+import useStore from "../../store/useStore";
 import { Alert } from "../../utils/swal";
 
-interface RouteParams extends Record<string, string | undefined> {
-  date: string;
-}
-
-export default function ListEventsPage() {
+export default function ListMyEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const id = useStore((store) => store.user.id);
+
   const singular = "evento";
-  const plural = "eventos";
+  const plural = "mis eventos";
   const route = "event";
 
-  const { date } = useParams<RouteParams>();
-
-  const parseDate = (dateString: string): string => {
-    const [day, month, year] = dateString.split("-");
-    return `${day}/${month}/${year}`;
-  };
-
-  const fetchEvents = async () => {
-    if (date) {
-      const events = await list_events({
-        params: { date: parseDate(date) },
+  const get_events = async () =>
+    setEvents(
+      await list_events({
+        params: { organizer_id: id },
         setState: setIsLoading,
-      });
-      setEvents(events);
-    } else {
-      setEvents(await list_events({ setState: setIsLoading }));
-    }
-  };
+      }),
+    );
 
   useEffect(() => {
-    fetchEvents();
+    get_events();
   }, []);
 
   const handleDelete = (id: string) => {
@@ -62,7 +49,7 @@ export default function ListEventsPage() {
         const resquest = async () => {
           const res = await delete_event({ id, setState: setIsLoading });
           if (res) {
-            await fetchEvents();
+            await get_events();
             Alert({ text: res, icon: "success", title: "Ok" });
           }
         };
@@ -76,10 +63,7 @@ export default function ListEventsPage() {
     <AdminLayout>
       <h1 className="text-2xl capitalize">{plural}</h1>
 
-      <div
-        className={`flex w-full items-center ${date ? "justify-between" : "justify-end"}`}
-      >
-        {date && <GoBack noMargin />}
+      <div className="flex w-full justify-end">
         <PrimaryButton onClick={() => navigate(`/${route}/`)}>
           Añadir {singular}
         </PrimaryButton>

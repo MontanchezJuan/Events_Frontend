@@ -36,3 +36,12 @@ export const INSCRIPTIONS_ENDPOINTS = {
   INSCRIPTION: "/inscriptions/",
   CREATE_INSCRIPTION: "/inscriptions/create",
 };
+
+export const CERTIFICATES_ENDPOINTS = {
+  GENERATE: "/certificates/generate/",
+};
+
+export const NOTIFICATIONS_ENDPOINTS = {
+  CREATE: "/notifications/create/",
+  GET_NOTIFICATIONS: "/notifications/user-notifications/",
+};

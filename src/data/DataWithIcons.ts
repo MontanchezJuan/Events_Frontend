@@ -50,6 +50,11 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
       icon: MdHome,
       path: "/",
     },
+    {
+      name: "Calendario",
+      icon: MdCalendarMonth,
+      path: "/calendar",
+    },
   ];
 
   const settingsItems = [
@@ -79,7 +84,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
             {
               name: "mis eventos",
               icon: MdEvent,
-              path: ADMINROUTES.EVENTS,
+              path: "/list-events/",
             },
           ],
         },
@@ -97,7 +102,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
             {
               name: "eventos",
               icon: MdEvent,
-              path: ADMINROUTES.EVENTS,
+              path: "/list-events/",
             },
             {
               name: "permisos",

@@ -42,9 +42,12 @@ export default function ListInscriptionsPage() {
     });
 
     if (res) {
+      get_inscriptions();
       Alert({ text: res, icon: "success", title: "Ok" });
     }
   };
+
+  //! Buton de finalizar evento
 
   return (
     <AdminLayout>
