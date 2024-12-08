@@ -1,30 +1,43 @@
-import { LiaAdSolid } from "react-icons/lia";
 import {
-  MdAccountCircle,
+  MdAdminPanelSettings,
+  MdCalendarMonth,
   MdEvent,
-  MdHomeFilled,
+  MdHome,
+  MdLocalPlay,
   MdLogout,
-  MdOutlinePeople,
+  MdManageAccounts,
+  MdPeople,
+  MdSwitchAccount,
 } from "react-icons/md";
 import { RoleName } from "../api/interfaces/user";
+import { Photo } from "../components/atoms/common/Photo";
 import { NavItem } from "../components/molecules/templates/MenuItems";
 import { SidebarItems } from "../interfaces/Sidebar.interfaces";
 import { ADMINROUTES } from "../routes/Admin.routes";
+import { USERROUTES } from "../routes/User.routes";
 import useStore from "../store/useStore";
 
 export const getMenuItemsByRole = (role: RoleName): NavItem[] => {
-  const commonItems = [{ name: "Inicio", path: "/", icon: MdHomeFilled }];
+  const commonItems = [{ name: "Inicio", path: "/", icon: MdHome }];
 
   switch (role) {
     case "user":
       return [
         ...commonItems,
-        { name: "Eventos", path: "/", icon: LiaAdSolid },
-        { name: "Calendario", path: "/", icon: LiaAdSolid },
-        { name: "Certificaciones", path: "/", icon: LiaAdSolid },
+        { name: "Eventos", path: "/events/my-events/", icon: MdEvent },
+        {
+          name: "Calendario",
+          path: USERROUTES.Calendar,
+          icon: MdCalendarMonth,
+        },
+        {
+          name: "Certificaciones",
+          path: USERROUTES.Certifications,
+          icon: MdLocalPlay,
+        },
       ];
     case "unauthenticated":
-      return [...commonItems];
+      return commonItems;
     default:
       return [];
   }
@@ -34,22 +47,28 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
   const paginasItems = [
     {
       name: "inicio",
-      icon: MdHomeFilled,
+      icon: MdHome,
       path: "/",
+    },
+    {
+      name: "Calendario",
+      icon: MdCalendarMonth,
+      path: "/calendar",
     },
   ];
 
   const settingsItems = [
     {
       name: "Cuenta",
-      icon: MdAccountCircle,
-      path: ADMINROUTES.PROFILE,
+      icon: Photo,
+      path: ADMINROUTES.MY_PROFILE,
     },
     {
       name: "Cerrar sesión",
       icon: MdLogout,
       path: "/logout",
       func: () => {
+        localStorage.removeItem("token");
         useStore.getState().resetUser();
       },
     },
@@ -65,7 +84,7 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
             {
               name: "mis eventos",
               icon: MdEvent,
-              path: ADMINROUTES.EVENTS,
+              path: "/list-events/",
             },
           ],
         },
@@ -83,11 +102,26 @@ export const getSidebarItems = (role: RoleName): SidebarItems[] => {
             {
               name: "eventos",
               icon: MdEvent,
-              path: ADMINROUTES.EVENTS,
+              path: "/list-events/",
+            },
+            {
+              name: "permisos",
+              icon: MdManageAccounts,
+              path: ADMINROUTES.PERMISSIONS,
+            },
+            {
+              name: "perfiles",
+              icon: MdSwitchAccount,
+              path: ADMINROUTES.PROFILES,
+            },
+            {
+              name: "roles",
+              icon: MdAdminPanelSettings,
+              path: ADMINROUTES.ROLES,
             },
             {
               name: "usuarios",
-              icon: MdOutlinePeople,
+              icon: MdPeople,
               path: ADMINROUTES.USERS,
             },
           ],

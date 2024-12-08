@@ -1,23 +1,16 @@
-import Swal, { SweetAlertIcon } from "sweetalert2";
-
-interface AlertProps {
-  color?: "#0F0F0F";
-  icon?: SweetAlertIcon;
-  message: string;
-  title?: string;
-}
+import Swal, { SweetAlertOptions } from "sweetalert2";
 
 export const Alert = ({
-  color = "#0F0F0F",
   icon = "error",
-  message,
   title = "Error",
-}: AlertProps) =>
+  ...props
+}: SweetAlertOptions) =>
   Swal.fire({
-    color: color,
-    confirmButtonColor: color,
-    iconColor: color,
-    title: title,
-    text: message,
-    icon: icon,
+    color: "#0F0F0F",
+    confirmButtonColor: "#00ff66",
+    iconColor: "#00ff66",
+    denyButtonColor: "#FF9F00",
+    title,
+    icon,
+    ...props,
   });

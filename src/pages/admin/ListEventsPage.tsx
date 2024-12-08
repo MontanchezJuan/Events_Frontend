@@ -1,61 +1,105 @@
 import { useEffect, useState } from "react";
-import { MdCreate, MdDelete } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { MdCreate, MdDelete, MdNotifications, MdPeople } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { Event } from "../../api/interfaces/event";
-import { list_events } from "../../api/services/eventsService";
+import { delete_event, list_events } from "../../api/services/eventsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
+import { GoBack } from "../../components/atoms/common/GoBack";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableButton } from "../../components/atoms/common/TableButton";
 import { TableColumn } from "../../components/atoms/common/TableColumn";
 import { Table } from "../../components/molecules/common/Table";
 import AdminLayout from "../../components/templates/AdminLayout";
+import { Alert } from "../../utils/swal";
+
+interface RouteParams extends Record<string, string | undefined> {
+  date: string;
+}
 
 export default function ListEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const singular = "evento";
+  const plural = "eventos";
+  const route = "event";
+
+  const { date } = useParams<RouteParams>();
+
+  const parseDate = (dateString: string): string => {
+    const [day, month, year] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
+  const fetchEvents = async () => {
+    if (date) {
+      const events = await list_events({
+        params: { date: parseDate(date) },
+        setState: setIsLoading,
+      });
+      setEvents(events);
+    } else {
+      setEvents(await list_events({ setState: setIsLoading }));
+    }
+  };
+
   useEffect(() => {
-    const get_events = async () => {
-      const userList = await list_events({ setState: setIsLoading });
-
-      setEvents(userList);
-    };
-
-    get_events();
+    fetchEvents();
   }, []);
+
+  const handleDelete = (id: string) => {
+    Alert({
+      cancelButtonText: "Cancelar",
+      confirmButtonText: `Sí, eliminar ${singular}`,
+      icon: "question",
+      showCancelButton: true,
+      text: `Deseas eliminar este ${singular}?`,
+      title: "Alerta",
+    }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        const resquest = async () => {
+          const res = await delete_event({ id, setState: setIsLoading });
+          if (res) {
+            await fetchEvents();
+            Alert({ text: res, icon: "success", title: "Ok" });
+          }
+        };
+
+        resquest();
+      }
+    });
+  };
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl">Eventos</h1>
+      <h1 className="text-2xl capitalize">{plural}</h1>
 
-      <div className="flex w-full justify-end">
-        <PrimaryButton onClick={() => navigate("/event/")}>
-          Añadir evento
+      <div
+        className={`flex w-full items-center ${date ? "justify-between" : "justify-end"}`}
+      >
+        {date && <GoBack noMargin />}
+        <PrimaryButton onClick={() => navigate(`/${route}/`)}>
+          Añadir {singular}
         </PrimaryButton>
       </div>
 
       <LoaderComponent isLoading={isLoading}>
-        <Table<Event> data={events} ignoreElements={["_id"]} itemsPerPage={4}>
+        <Table<Event> data={events} ignoreElements={["_id"]}>
           <TableColumn<Event>
             key="_id"
             dataIndex="image"
-            title="Fondo"
+            title="Imagen"
             textCenter
+            className="p-0"
             render={({ image, name }) => (
-              <img className="h-16 w-16" src={image} alt={name} />
+              <img className="w-h-20 h-20" src={image} alt={name} />
             )}
           />
           <TableColumn<Event> key="_id" dataIndex="name" title="Nombre" />
           <TableColumn<Event> key="_id" dataIndex="date" title="Fecha" />
           <TableColumn<Event> key="_id" dataIndex="site" title="Lugar" />
-          {/* <TableColumn<Event>
-          className="flex"
-          key="_id"
-          dataIndex="description"
-          title="Descripción"
-        /> */}
           <TableColumn<Event> key="_id" dataIndex="entity" title="Entidad" />
           <TableColumn<Event>
             key="_id"
@@ -66,7 +110,7 @@ export default function ListEventsPage() {
                 {categories.map((category, index) => (
                   <div
                     key={index}
-                    className={`${index % 2 === 1 ? "bg-red-700" : "bg-gray-600"} rounded-lg px-2 py-1 text-center text-white`}
+                    className="whitespace-nowrap rounded-lg border border-[#00ff66] px-2 py-1 text-center text-white"
                   >
                     {category}
                   </div>
@@ -82,20 +126,47 @@ export default function ListEventsPage() {
             render={({ _id }) => (
               <div className="flex min-h-full items-center justify-center gap-2">
                 <TableButton
-                  color="blue"
-                  onClick={() => navigate(`/event/${_id}`)}
+                  color="yellow"
+                  onClick={() => navigate(`/send-notifications/${_id}`)}
                   rounded
-                  data-tooltip-id="edit"
+                  data-tooltip-id={`notification-${_id}`}
                 >
-                  <MdCreate />
-                  <Tooltip id="edit" place="top">
-                    Editar evento
+                  <MdNotifications />
+                  <Tooltip id={`notification-${_id}`} place="top">
+                    Notificaciones para el {singular}
                   </Tooltip>
                 </TableButton>
-                <TableButton color="red" rounded data-tooltip-id="delete">
+                <TableButton
+                  color="green"
+                  onClick={() => navigate(`/list-inscriptions/${_id}`)}
+                  rounded
+                  data-tooltip-id={`view-${_id}`}
+                >
+                  <MdPeople />
+                  <Tooltip id={`view-${_id}`} place="top">
+                    Visualizar inscripciones del {singular}
+                  </Tooltip>
+                </TableButton>
+                <TableButton
+                  color="blue"
+                  onClick={() => navigate(`/${route}/${_id}`)}
+                  rounded
+                  data-tooltip-id={`edit-${_id}`}
+                >
+                  <MdCreate />
+                  <Tooltip id={`edit-${_id}`} place="top">
+                    Editar {singular}
+                  </Tooltip>
+                </TableButton>
+                <TableButton
+                  color="red"
+                  rounded
+                  data-tooltip-id={`delete-${_id}`}
+                  onClick={() => handleDelete(_id)}
+                >
                   <MdDelete />
-                  <Tooltip id="delete" place="top">
-                    Eliminar evento
+                  <Tooltip id={`delete-${_id}`} place="top">
+                    Eliminar {singular}
                   </Tooltip>
                 </TableButton>
               </div>

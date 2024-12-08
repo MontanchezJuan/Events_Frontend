@@ -19,15 +19,11 @@ export const NavMenu = () => {
       contentClassName="hidden items-center gap-2 md:flex"
     >
       <Drawer.Content>
-        <MenuItems
-          menuItems={menuItems}
-          closeMenu={closeDrawer}
-          type="Button"
-        />
+        <MenuItems menuItems={menuItems} closeMenu={closeDrawer} />
         <RoleSwitcher closeMenu={closeDrawer} />
       </Drawer.Content>
       <Drawer.ResponsiveContent>
-        <MenuItems menuItems={menuItems} closeMenu={closeDrawer} type="Link" />
+        <MenuItems menuItems={menuItems} closeMenu={closeDrawer} />
         <RoleSwitcher closeMenu={closeDrawer} />
       </Drawer.ResponsiveContent>
     </Drawer>

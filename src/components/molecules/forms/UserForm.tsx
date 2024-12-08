@@ -1,105 +1,145 @@
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import { useForm } from "react-hook-form";
-// import * as yup from "yup";
-// import { FormField } from "../../../interfaces/Form.interfaces";
-// import { ButtonWhite } from "../../atoms/common/Button";
-// import { ErrorText } from "../../atoms/common/ErrorText";
-// import { Input } from "../../atoms/common/Input";
-// import { Form } from "../../templates/Form";
-// import { User } from "../../../api/interfaces/user";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { MdAdd, MdCreate } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { User } from "../../../api/interfaces/user";
+import { sign_up } from "../../../api/services/securityService";
+import { FormField } from "../../../interfaces/Form.interfaces";
+import { ADMINROUTES } from "../../../routes/Admin.routes";
+import { Alert } from "../../../utils/swal";
+import { PrimaryButton } from "../../atoms/common/Button";
+import { ErrorText } from "../../atoms/common/ErrorText";
+import { Input } from "../../atoms/common/Input";
+import { LoaderComponent } from "../../atoms/common/LoaderComponent";
+import { Form } from "../../templates/Form";
 
-// const schema = yup.object({
-//   categories: yup
-//     .array()
-//     .of(yup.string().required("Cada categoría debe ser una cadena de texto."))
-//     .min(1, "Debe tener al menos una categoría."),
-//   date: yup
-//     .date()
-//     .required("La fecha es obligatoria.")
-//     .typeError("La fecha debe ser válida."),
-//   description: yup.string().required("La descripción es obligatoria."),
-//   entity: yup.string().required("La entidad es obligatoria."),
-//   image: yup.string().url("La imagen debe ser una URL válida."),
-//   name: yup.string().required("El nombre es obligatorio."),
-//   organizer_id: yup.string().required("El ID del organizador es obligatorio."),
-//   restrictions: yup
-//     .array()
-//     .of(
-//       yup.string().required("Cada restricción debe ser una cadena de texto."),
-//     ),
-//   site: yup.string().required("El sitio es obligatorio."),
-// });
-// export type EventFormData = yup.InferType<typeof schema>;
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .email("Ups, no corresponde a un correo electrónico.")
+      .required("El correo electrónico es obligatorio."),
+    password: yup
+      .string()
+      .required("La contraseña es obligatoria.")
+      .min(8, "La contraseña debe tener al menos 8 caracteres.")
+      .matches(
+        /[A-Z]/,
+        "La contraseña debe tener al menos una letra mayúscula.",
+      )
+      .matches(/[0-9]/, "La contraseña debe tener al menos un número.")
+      .matches(
+        /[\W_]/,
+        "La contraseña debe tener al menos un carácter especial.",
+      ),
+  })
+  .required();
+export type SignupFormData = yup.InferType<typeof schema>;
 
-// interface EventFormProps {
-//   initialValues?: User | null;
-// }
+interface UserFormProps {
+  initialValues?: User | null;
+}
 
-// export const UserForm = ({ initialValues }: EventFormProps) => {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm<EventFormData>({
-//     resolver: yupResolver(schema),
-//     defaultValues: initialValues
-//       ? {
-//           ...initialValues,
-//           date: new Date(initialValues.date),
-//         }
-//       : {
-//           categories: [],
-//           date: new Date(),
-//           description: "",
-//           entity: "",
-//           image: "",
-//           name: "",
-//           organizer_id: "",
-//           restrictions: [],
-//           site: "",
-//         },
-//   });
+export const UserForm = ({ initialValues }: UserFormProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-//   const onSubmit = (data: EventFormData) => alert(data);
+  const singular = "usuario";
 
-//   const formFields: FormField[] = [
-//     {
-//       placeholder: "Nombre del evento",
-//       name: "name",
-//       type: "text",
-//       error: errors.name?.message,
-//     },
-//     {
-//       placeholder: "Descripción",
-//       name: "description",
-//       type: "text",
-//       error: errors.description?.message,
-//     },
-//     {
-//       placeholder: "Lugar",
-//       name: "site",
-//       type: "text",
-//       error: errors.site?.message,
-//     },
-//   ];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: initialValues
+      ? { email: initialValues.email, password: initialValues.password }
+      : {},
+  });
 
-//   return (
-//     <Form onSubmit={handleSubmit(onSubmit)}>
-//       {formFields.map((field) => (
-//         <div key={field.name}>
-//           <Input
-//             placeholder={field.placeholder}
-//             type={field.type}
-//             error={field.error}
-//             {...register(field.name as keyof EventFormData)}
-//           />
-//           {field.error && <ErrorText>{field.error}</ErrorText>}
-//         </div>
-//       ))}
+  const onSubmit = async (data: SignupFormData) => {
+    if (initialValues) {
+      //   const res = await update_user({
+      //     id: initialValues.id,
+      //     newData: data,
+      //     setState: setIsLoading,
+      //   });
+      //   if (res) {
+      //     Alert({
+      //       text: "Usuario actualizado correctamente",
+      //       icon: "success",
+      //       title: "Ok",
+      //     }).then(() => {
+      //       navigate(ADMINROUTES.USERS);
+      //     });
+      //   }
+      Alert({
+        text: "uwu",
+        icon: "success",
+        title: "Ok",
+      });
+    } else {
+      const res = await sign_up({
+        newData: { email: data.email, password: data.password },
+        setState: setIsLoading,
+      });
 
-//       <ButtonWhite type="submit" forForm>
-//         {initialValues ? "Editar evento" : "Crear evento"}
-//       </ButtonWhite>
-//     </Form>
-//   );
-// };
+      if (res) {
+        Alert({
+          text: res,
+          icon: "success",
+          title: "Ok",
+        }).then(() => {
+          navigate(ADMINROUTES.USERS);
+        });
+      }
+    }
+  };
+
+  const formFields: FormField[] = [
+    {
+      placeholder: "Correo electrónico",
+      name: "email",
+      type: "text",
+      error: errors.email?.message,
+    },
+    {
+      placeholder: "Contraseña",
+      name: "password",
+      type: "text",
+      error: errors.password?.message,
+    },
+  ];
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      {formFields.map((field) => (
+        <div key={field.name}>
+          <Input
+            placeholder={field.placeholder}
+            type={field.type}
+            error={field.error}
+            {...register(field.name as keyof SignupFormData)}
+          />
+          {field.error && <ErrorText>{field.error}</ErrorText>}
+        </div>
+      ))}
+
+      <PrimaryButton disabled={isLoading} type="submit" forForm>
+        <LoaderComponent isLoading={isLoading}>
+          {initialValues ? (
+            <>
+              <MdCreate /> Editar {singular}
+            </>
+          ) : (
+            <>
+              <MdAdd /> Crear {singular}
+            </>
+          )}
+        </LoaderComponent>
+      </PrimaryButton>
+    </Form>
+  );
+};

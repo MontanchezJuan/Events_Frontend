@@ -53,7 +53,7 @@
   text-align: justify; /* Justifica la descripción */
 }
 
-.back-content .date {
+.date {
   font-size: 12px;
   color: #ffffff88;
   display: flex;
@@ -109,7 +109,7 @@
   margin: 8px 0;
 }
 
-.website {
+.site {
   font-size: 12px;
   color: #ffffff88;
   text-align: center;

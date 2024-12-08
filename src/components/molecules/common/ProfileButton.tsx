@@ -1,4 +1,5 @@
-import { ButtonBlack } from "../../atoms/common/Button";
+import { MdAccountCircle } from "react-icons/md";
+import useStore from "../../../store/useStore";
 
 interface ProfileButtonProps {
   onClick: () => void;
@@ -8,15 +9,32 @@ interface ProfileButtonProps {
 export const ProfileButton = ({
   onClick,
   className = "",
-}: ProfileButtonProps) => (
-  <ButtonBlack onClick={onClick} className={className}>
-    <img
-      className="rounded-full"
-      width={28}
-      height={28}
-      src="https://ritmo95.sbs.co/wp-content/uploads/sites/4/2018/09/Ozuna-090518.jpg"
-      alt="juan"
-    />
-    <span>Cuenta</span>
-  </ButtonBlack>
-);
+}: ProfileButtonProps) => {
+  const user = useStore((store) => store.user);
+
+  return (
+    <div
+      onClick={onClick}
+      className={`${className} flex min-w-[120px] cursor-pointer select-none items-center justify-center gap-2 rounded-xl border px-[12px] py-[6px] text-base font-semibold text-white transition-colors duration-700 hover:border-[#00ff66] hover:text-[#00ff66]`}
+    >
+      {user.userProfile ? (
+        <img
+          className="rounded-full"
+          style={{
+            width: "28px",
+            height: "28px",
+            objectFit: "cover",
+            display: "block",
+            margin: "0 auto",
+          }}
+          src={user.userProfile.profilePhoto}
+          alt={user.userProfile.name || "profile picture"}
+        />
+      ) : (
+        <MdAccountCircle />
+      )}
+
+      <span>Cuenta</span>
+    </div>
+  );
+};

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { PUBLICROUTES } from "../../../routes/Public.routes";
 import useStore from "../../../store/useStore";
-import { ButtonBorderWhite, PrimaryButton } from "../../atoms/common/Button";
+import { ButtonBorder, PrimaryButton } from "../../atoms/common/Button";
 import { AccountNavItem } from "./Account.NavItem";
 
 interface RoleSwitcherProps {
@@ -21,13 +21,13 @@ export const RoleSwitcher = ({ closeMenu }: RoleSwitcherProps) => {
   if (role === "unauthenticated") {
     return (
       <>
-        <PrimaryButton onClick={() => handleClick(PUBLICROUTES.LOGIN)}>
+        <PrimaryButton onClick={() => handleClick(PUBLICROUTES.Login)}>
           Iniciar Sesión
         </PrimaryButton>
 
-        <ButtonBorderWhite onClick={() => handleClick(PUBLICROUTES.SIGNUP)}>
+        <ButtonBorder onClick={() => handleClick(PUBLICROUTES.Signup)}>
           Registrarse
-        </ButtonBorderWhite>
+        </ButtonBorder>
       </>
     );
   }

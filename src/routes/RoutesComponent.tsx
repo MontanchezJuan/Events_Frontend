@@ -16,7 +16,11 @@ const RoutesComponent = ({ routes, role }: RoutesComponentProps) => {
           key={route.path + index}
           element={<PrivateRoute requiredRole={role} />}
         >
-          <Route path={route.path} element={<route.component />} />
+          <Route
+            path={route.path}
+            index={route.index}
+            element={<route.component />}
+          />
         </Route>
       ))}
 

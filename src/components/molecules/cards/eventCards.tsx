@@ -1,54 +1,41 @@
 import React from "react";
 import { AiOutlineCalendar } from "react-icons/ai";
+import { MdLocationOn } from "react-icons/md";
+import { Event } from "../../../api/interfaces/event";
 import { PrimaryButton } from "../../atoms/common/Button";
 import "./EventCard.css";
 
 interface EventCardProps {
-  title: string;
-  description: string;
-  date: string;
-  categories: string[];
-  imageUrl: string;
-  site: string;
+  event: Event;
   onRegister: () => void;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
-  title,
-  description,
-  date,
-  categories,
-  imageUrl,
-  site,
-  onRegister,
-}) => {
+const EventCard: React.FC<EventCardProps> = ({ event, onRegister }) => {
+  const { name, date, image, site } = event;
+
   return (
-    <div className="event-card">
-      <div className="content">
-        {/* Parte trasera */}
-        <div className="back">
-          <div className="back-content">
-            <h2 className="title">{title}</h2>
-            <p className="description">{description}</p>
-            <p className="date">
-              <AiOutlineCalendar /> {date}
-            </p>
-            <div className="flex w-full justify-center">
-              <PrimaryButton onClick={onRegister}>Registrarse</PrimaryButton>
-            </div>
-          </div>
+    <div className="flex flex-col rounded-lg bg-zinc-800">
+      <img src={image} alt={name} className="w-[280px] rounded-md" />
+
+      <div className="flex flex-col gap-1 p-4">
+        <div className="flex h-[56px] max-w-[200px] overflow-hidden text-wrap">
+          <h2 className="text-lg">{name}</h2>
         </div>
 
-        {/* Parte frontal */}
-        <div className="front">
-          <div className="img">
-            <img src={imageUrl} alt={title} className="image" />
-          </div>
-          <div className="front-content">
-            <small className="badge">{categories.join(", ")}</small>
-            <h2 className="title">{title}</h2>
-            <p className="site">{site}</p> {/* Nuevo elemento del sitio web */}
-          </div>
+        <p className="flex items-center justify-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-500">
+          <MdLocationOn />
+
+          {site}
+        </p>
+
+        <p className="mb-1 flex items-center justify-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-500">
+          <AiOutlineCalendar />
+
+          {date}
+        </p>
+
+        <div className="flex w-full justify-center">
+          <PrimaryButton onClick={onRegister}>Visualizar evento</PrimaryButton>
         </div>
       </div>
     </div>

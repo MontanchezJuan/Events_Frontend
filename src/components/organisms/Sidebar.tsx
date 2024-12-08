@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 import { getSidebarItems } from "../../data/DataWithIcons";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import useStore from "../../store/useStore";
@@ -17,9 +18,9 @@ const Sidebar = () => {
   const sidebarRef = useClickOutside(closeMenu);
 
   const activeLink =
-    "flex items-center gap-3 px-4 py-2 m-2 rounded-lg text-white text-md bg-zinc-900 font-semibold";
+    "flex items-center gap-3 px-4 py-2 m-2 rounded-lg text-white text-md bg-[#00ff66] font-semibold";
   const normalLink =
-    "flex items-center gap-3 px-4 py-2 m-2 rounded-lg text-md text-zinc-700 border border-white hover:border-zinc-900 font-semibold";
+    "flex items-center gap-3 px-4 py-2 m-2 rounded-lg text-md text-zinc-700 border border-white hover:border-[#00ff66] hover:text-[#00ff66] font-semibold transition-colors duration-700";
 
   const sidebarItems = useMemo(() => getSidebarItems(role), [role]);
 
@@ -35,7 +36,7 @@ const Sidebar = () => {
             <p className="uppercase text-zinc-600">
               {isSidebarOpen
                 ? sidebarItem.title
-                : sidebarItem.title.slice(0, 10)}
+                : sidebarItem.title.slice(0, 9)}
             </p>
 
             {sidebarItem.items.map((item) => (
@@ -54,11 +55,18 @@ const Sidebar = () => {
                   closeMenu();
                 }}
                 to={item.path}
+                data-tooltip-id={item.name}
               >
                 <item.icon className="text-2xl" />
 
                 {isSidebarOpen && (
                   <span className="capitalize">{item.name}</span>
+                )}
+
+                {!isSidebarOpen && (
+                  <Tooltip className="capitalize" id={item.name} place="right">
+                    {item.name}
+                  </Tooltip>
                 )}
               </NavLink>
             ))}

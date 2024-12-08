@@ -18,11 +18,11 @@ export const Header = ({ isSidebarOpen, setIsSidebarOpen }: HeaderProps) => {
   return (
     <header className="flex h-[60px] justify-center bg-zinc-900 px-4">
       <div className="w-full max-w-[1128px]">
-        <ul className="flex h-full items-center gap-4 py-4 sm:gap-6">
+        <ul className="flex items-center h-full gap-4 py-4 sm:gap-6">
           {SidebarRoles.includes(role) &&
             (setIsSidebarOpen ? (
               <MdMenu
-                className="cursor-pointer text-3xl"
+                className={`cursor-pointer text-3xl`}
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               />
             ) : (

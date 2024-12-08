@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert } from "../../utils/swal";
 import { axiosSecurity } from "../axiosClient";
-import { ENDPOINTS_SECURITY } from "../endpoints";
+import { USER_ENDPOINTS } from "../endpoints";
 import { ResponseData } from "../interfaces/common";
 import { User } from "../interfaces/user";
 
@@ -13,13 +13,13 @@ export const list_users = async ({
   try {
     setState(true);
     const { data } = await axiosSecurity.get<ResponseData<User[]>>(
-      ENDPOINTS_SECURITY.LIST_USERS,
+      USER_ENDPOINTS.LIST_USERS,
     );
 
     return data?.data || [];
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
-    Alert({ message: errorMessage });
+    Alert({ text: errorMessage });
     console.error("Error al listar usuarios:", e);
     return [];
   } finally {
@@ -37,13 +37,13 @@ export const user_by_id = async ({
   try {
     setState(true);
     const { data } = await axiosSecurity.get<ResponseData<User>>(
-      `${ENDPOINTS_SECURITY.USER_BY_ID}${id}`,
+      `${USER_ENDPOINTS.USER}${id}`,
     );
 
     return data?.data || null;
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
-    Alert({ message: errorMessage });
+    Alert({ text: errorMessage });
     console.error("Error al listar un usuario:", e);
     return null;
   } finally {
@@ -51,50 +51,77 @@ export const user_by_id = async ({
   }
 };
 
-// TODO: THIS SHIT
-
-// export const create_user = async ({
-//   id,
-//   setState,
-// }: {
-//   id: string;
-//   setState: React.Dispatch<React.SetStateAction<boolean>>;
-// }): Promise<User | null> => {
-//   try {
-//     setState(true);
-//     const { data } = await axiosSecurity.post<ResponseData<User>>(
-//       `${ENDPOINTS_SECURITY.USER_BY_ID}${id}`,
-//     );
-
-//     return data?.data || null;
-//   } catch (e: any) {
-//     const errorMessage = e.response?.data?.message || "Algo salió mal";
-//     Alert({ message: errorMessage });
-//     console.error("Error al listar un usuario:", e);
-//     return null;
-//   } finally {
-//     setState(false);
-//   }
-// };
-export const getAuthenticatedUserProfile = async ({
+export const delete_user = async ({
   id,
-  setState, 
-
+  setState,
 }: {
   id: string;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+}): Promise<string | null> => {
+  try {
+    setState(true);
+    const { data } = await axiosSecurity.delete<ResponseData<string>>(
+      `${USER_ENDPOINTS.USER}${id}`,
+    );
+
+    return data?.message || null;
+  } catch (e: any) {
+    const errorMessage = e.response?.data?.message || "Algo salió mal";
+    Alert({ text: errorMessage });
+    console.error("Error al eliminar un usuario:", e);
+    return null;
+  } finally {
+    setState(false);
+  }
+};
+
+export const update_user = async ({
+  id,
+  newData,
+  setState,
+}: {
+  id: string;
+  newData: { email: string; password: string };
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<User | null> => {
   try {
     setState(true);
-    const { data } = await axiosSecurity.get<ResponseData<User>>(
-      `${ENDPOINTS_SECURITY.AUTHENTICATED_USER_PROFILE}${id}`
+    const { data } = await axiosSecurity.put<ResponseData<User>>(
+      `${USER_ENDPOINTS.USER}${id}`,
+      newData,
     );
 
     return data?.data || null;
   } catch (e: any) {
     const errorMessage = e.response?.data?.message || "Algo salió mal";
-    Alert({ message: errorMessage });
-    console.error("Error al obtener el perfil del usuario autenticado:", e);
+    Alert({ text: errorMessage });
+    console.error("Error al actualizar un usuario:", e);
+    return null;
+  } finally {
+    setState(false);
+  }
+};
+
+export const match_userProfile = async ({
+  id_user,
+  id_userProfile,
+  setState,
+}: {
+  id_user: string;
+  id_userProfile: string;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+}): Promise<User | null> => {
+  try {
+    setState(true);
+    const { data } = await axiosSecurity.put<ResponseData<User>>(
+      `/users/user/${id_user}/user_profile/${id_userProfile}`,
+    );
+
+    return data?.data || null;
+  } catch (e: any) {
+    const errorMessage = e.response?.data?.message || "Algo salió mal";
+    Alert({ text: errorMessage });
+    console.error("Error al hacer match un user y un userProfile:", e);
     return null;
   } finally {
     setState(false);

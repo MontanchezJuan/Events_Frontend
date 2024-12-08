@@ -1,9 +1,10 @@
 import React, { ButtonHTMLAttributes } from "react";
 
 enum ButtonColors {
-  green = "bg-green-500 hover:bg-green-800 focus:ring-green-400",
   blue = "bg-blue-500 hover:bg-blue-800 focus:ring-blue-400",
+  green = "bg-green-500 hover:bg-green-800 focus:ring-green-400",
   red = "bg-red-500 hover:bg-red-800 focus:ring-red-400",
+  yellow = "bg-yellow-500 hover:bg-yellow-800 focus:ring-yellow-400",
   gray = "bg-zinc-400",
 }
 

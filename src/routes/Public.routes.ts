@@ -2,9 +2,10 @@ import { lazy } from "react";
 import { Route } from "../interfaces/Route.interfaces";
 
 export enum PUBLICROUTES {
-  LANDING = "/",
-  LOGIN = "/login",
-  SIGNUP = "/signup",
+  Landing = "/",
+  Login = "login",
+  Signup = "signup",
+  ViewEvent = "events/event/:id?",
 }
 
 // Here are routes to unauthenticated role
@@ -12,14 +13,18 @@ export const PublicRoutes: Route[] = [
   {
     component: lazy(() => import("../pages/common/LandingPage")),
     index: true,
-    path: PUBLICROUTES.LANDING,
+    path: PUBLICROUTES.Landing,
   },
   {
     component: lazy(() => import("../pages/auth/LoginPage")),
-    path: PUBLICROUTES.LOGIN,
+    path: PUBLICROUTES.Login,
   },
   {
     component: lazy(() => import("../pages/auth/SingupPage")),
-    path: PUBLICROUTES.SIGNUP,
+    path: PUBLICROUTES.Signup,
+  },
+  {
+    component: lazy(() => import("../pages/common/ViewEventPage")),
+    path: PUBLICROUTES.ViewEvent,
   },
 ];

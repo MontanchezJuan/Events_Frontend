@@ -18,6 +18,15 @@ const axiosBusiness = axios.create({
   },
 });
 
+// Instancia para el servicio de lógica de negocio
+const axiosBusinessPDF = axios.create({
+  baseURL: import.meta.env.VITE_BUSINESS_URL,
+  headers: {
+    "Content-Type": "application/json",
+    responseType: "blob",
+  },
+});
+
 // Interceptor de autenticación con tipado de TypeScript
 const authInterceptor = async (config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
@@ -35,12 +44,17 @@ const authInterceptor = async (config: InternalAxiosRequestConfig) => {
 
 axiosSecurity.interceptors.request.use(authInterceptor);
 axiosBusiness.interceptors.request.use(authInterceptor);
+axiosBusinessPDF.interceptors.request.use(authInterceptor);
 
 // Interceptor de respuesta con tipado de TypeScript
 const errorInterceptor = (error: AxiosError) => {
   return Promise.reject(error);
 };
 
+axiosBusinessPDF.interceptors.response.use(
+  (response) => response,
+  errorInterceptor,
+);
 axiosSecurity.interceptors.response.use(
   (response) => response,
   errorInterceptor,
@@ -50,4 +64,4 @@ axiosBusiness.interceptors.response.use(
   errorInterceptor,
 );
 
-export { axiosBusiness, axiosSecurity };
+export { axiosBusiness, axiosBusinessPDF, axiosSecurity };

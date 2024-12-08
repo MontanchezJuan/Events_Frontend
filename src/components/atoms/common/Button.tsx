@@ -19,8 +19,8 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const defaultClassName =
-    "flex items-center justify-center min-w-[120px] select-none font-semibold";
-  const appliedClassName = `${defaultClassName} ${SizeButtons[size]} ${SizeTexts[size]} ${className} ${forForm && "w-[240px]"}`;
+    "flex items-center justify-center min-w-[120px] select-none font-semibold text-white";
+  const appliedClassName = `${className} ${defaultClassName} ${SizeButtons[size]} ${SizeTexts[size]} ${forForm && "w-[240px]"}`;
 
   return (
     <button className={appliedClassName} {...props}>
@@ -32,7 +32,16 @@ const Button = ({
 export const PrimaryButton = (props: ButtonProps) => {
   return (
     <Button
-      className="bg-[#00ff66] text-zinc-900 transition-colors duration-700 hover:bg-[#00B347]"
+      className="bg-[#00ff66] text-zinc-800 transition-colors duration-700 hover:bg-[#00B340]"
+      {...props}
+    />
+  );
+};
+
+export const SecondaryButton = (props: ButtonProps) => {
+  return (
+    <Button
+      className="bg-[#FF9F00] text-zinc-800 transition-colors duration-700 hover:bg-[#FF9F00]"
       {...props}
     />
   );
@@ -42,6 +51,8 @@ export const ButtonBlack = (props: ButtonProps) => {
   return <Button className="bg-zinc-900 text-white" {...props} />;
 };
 
-export const ButtonBorderWhite = (props: ButtonProps) => {
-  return <Button className="border border-white" {...props} />;
+export const ButtonBorder = (props: ButtonProps) => {
+  return (
+    <Button className="border border-[#00ff66] text-[#00ff66]" {...props} />
+  );
 };
