@@ -14,7 +14,7 @@ export enum ORGANIZERROUTES {
 // Here are routes to organizer role
 export const OrganizerRoutes: Route[] = [
   {
-    component: lazy(() => import("../pages/organizer/DashboardPage")),
+    component: lazy(() => import("../pages/admin/DashboardPage")),
     index: true,
     path: ORGANIZERROUTES.HOME,
   },

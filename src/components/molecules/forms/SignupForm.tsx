@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import { create_profile } from "../../../api/services/profilesService";
 import { sign_up } from "../../../api/services/securityService";
 import { FormField } from "../../../interfaces/Form.interfaces";
 import { PUBLICROUTES } from "../../../routes/Public.routes";
@@ -62,6 +63,14 @@ export const SignupForm = () => {
     });
 
     if (res) {
+      create_profile({
+        newData: {
+          name: data.email,
+          profilePhoto:
+            "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+        },
+        setState: setIsLoading,
+      });
       Alert({
         text: res,
         icon: "success",

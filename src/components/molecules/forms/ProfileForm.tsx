@@ -37,7 +37,6 @@ export const ProfileForm = ({ initialValues }: ProfileFormProps) => {
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const user = useStore((store) => store.user);
   const get_user = useStore((store) => store.get_user);
 
   const {
@@ -73,9 +72,7 @@ export const ProfileForm = ({ initialValues }: ProfileFormProps) => {
         setState: setIsLoadingButton,
       });
       if (res) {
-        if (initialValues.id === user.id) {
-          get_user();
-        }
+        get_user();
         Alert({
           title: "Ok",
           text: "Perfil actualizado correctamente",
@@ -138,18 +135,18 @@ export const ProfileForm = ({ initialValues }: ProfileFormProps) => {
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-5xl font-bold text-center">
+      <h1 className="mb-4 text-center text-5xl font-bold">
         {initialValues ? "Editar perfil" : "Crear perfil"}
       </h1>
 
-      <div className="p-4 rounded-lg bg-zinc-500">
+      <div className="rounded-lg bg-zinc-500 p-4">
         <div className="flex">
           <GoBack />
         </div>
 
         <Image />
 
-        <Form className="gap-4 mt-4" onSubmit={handleSubmit(onSubmit)}>
+        <Form className="mt-4 gap-4" onSubmit={handleSubmit(onSubmit)}>
           {formFields.map((field) => (
             <div key={field.name}>
               <Input
