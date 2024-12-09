@@ -40,7 +40,7 @@ export default function SendNotificationPage() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, validatingFields },
+    formState: { errors },
   } = useForm<NotificationFormData>({
     resolver: yupResolver(schema),
     defaultValues: { notification_type: "anuncio" },
@@ -70,8 +70,6 @@ export default function SendNotificationPage() {
       <GoBack />
 
       <h1 className="mb-4 text-2xl">Enviar {singular}</h1>
-
-      {JSON.stringify(validatingFields)}
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">

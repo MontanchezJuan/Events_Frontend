@@ -26,7 +26,7 @@ export default function EventPage() {
   };
 
   const parseDate = (): string => {
-    if (state.date) {
+    if (state && state.date) {
       const [day, month, year] = state.date.split("/");
 
       const formattedDay = day.padStart(2, "0");
@@ -53,7 +53,7 @@ export default function EventPage() {
             ...event,
             _id: event?._id || "",
             categories: event?.categories || [],
-            date: event?.date || parseDate() || "",
+            date: event?.date ? event?.date : parseDate(),
             description: event?.description || "",
             entity: event?.entity || "",
             image: event?.image || "",

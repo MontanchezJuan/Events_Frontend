@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Event } from "../../api/interfaces/event";
-import { User } from "../../api/interfaces/user";
 import { list_events } from "../../api/services/eventsService";
-import { list_users } from "../../api/services/usersService";
 import AdminLayout from "../../components/templates/AdminLayout";
 // import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import {
@@ -22,14 +20,14 @@ import {
 import "./custom-styles.css";
 
 export default function Dashboard() {
-  const [users, setUsers] = useState<User[]>([]);
+  // const [users, setUsers] = useState<User[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const userList = await list_users({ setState: setIsLoading });
-      setUsers(userList);
+      // const userList = await list_users({ setState: setIsLoading });
+      // setUsers(userList);
       const eventList = await list_events({ setState: setIsLoading });
       setEvents(eventList);
     };
@@ -54,7 +52,7 @@ export default function Dashboard() {
     return lastThreeMonths;
   };
 
-  const userStats = getLastThreeMonthsData<User>(users, "users");
+  // const userStats = getLastThreeMonthsData<User>(users, "users");
   const eventStats = getLastThreeMonthsData<Event>(events, "events");
 
   const deviceData = [
@@ -72,10 +70,10 @@ export default function Dashboard() {
 
         {/* Tarjetas de Estadísticas Rápidas */}
         <div className="grid-stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          <div className="card">
+          {/*<div className="card">
             <h2 className="card-title">Usuarios Totales</h2>
             <p className="card-value text-green">{users.length}</p>
-          </div>
+          </div>*/}
           <div className="card">
             <h2 className="card-title">Eventos Totales</h2>
             <p className="card-value text-blue">{events.length}</p>
@@ -93,7 +91,7 @@ export default function Dashboard() {
         {/* Gráficos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {/* Gráfico de Barras - Usuarios */}
-          <div className="card">
+          {/* <div className="card">
             <h2 className="card-title">Usuarios en los Últimos 3 Meses</h2>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={250}>
@@ -107,7 +105,7 @@ export default function Dashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </div> */}
 
           {/* Gráfico de Barras - Eventos */}
           <div className="card">

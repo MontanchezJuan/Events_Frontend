@@ -29,11 +29,18 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
   const [inputCategory, setInputCategory] = useState<string>("");
   const [inputRestriction, setInputRestriction] = useState<string>("");
 
+
   const navigate = useNavigate();
 
   const parseDate = (dateString: string): string => {
-    const [day, month, year] = dateString.split("/");
-    return `${year}-${month}-${day}`;
+    if (dateString) {
+      const [day, month, year] = dateString.split("/");
+      const formattedDay = day.padStart(2, "0");
+      const formattedMonth = month.padStart(2, "0");
+      return `${year}-${formattedMonth}-${formattedDay}`;
+    }
+
+    return "";
   };
 
   const {
@@ -87,17 +94,25 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
   };
 
   const onSubmit = async (data: EventFormData) => {
-    if (initialValues) {
+    const newData = {
+      categories: data.categories,
+      restrictions: data.restrictions,
+      description: data.description,
+      entity: data.entity,
+      name: data.name,
+      site: data.site,
+      time: data.time,
+      date: new Date(data.date).toLocaleDateString(),
+      organizer_id: useStore.getState().user.id,
+      image: data.image
+        ? data.image
+        : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Logo_de_la_Universidad_de_Caldas.svg/2044px-Logo_de_la_Universidad_de_Caldas.svg.png",
+    };
+
+    if (initialValues && initialValues._id) {
       const ok = await update_event({
         id: initialValues._id,
-        newData: {
-          ...data,
-          date: new Date(data.date).toLocaleDateString(),
-          organizer_id: initialValues.organizer_id,
-          image: data.image
-            ? data.image
-            : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Logo_de_la_Universidad_de_Caldas.svg/2044px-Logo_de_la_Universidad_de_Caldas.svg.png",
-        },
+        newData,
         setState: setIsLoading,
       });
       if (ok) {
@@ -110,15 +125,6 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
         });
       }
     } else {
-      const newData = {
-        ...data,
-        date: new Date(data.date).toLocaleDateString(),
-        organizer_id: useStore.getState().user.id,
-        image: data.image
-          ? data.image
-          : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Logo_de_la_Universidad_de_Caldas.svg/2044px-Logo_de_la_Universidad_de_Caldas.svg.png",
-      };
-
       const ok = await create_event({
         newData,
         setState: setIsLoading,
@@ -300,7 +306,7 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
 
         <PrimaryButton disabled={isLoading} type="submit" forForm>
           <LoaderComponent isLoading={isLoading}>
-            {initialValues ? (
+            {initialValues && initialValues._id ? (
               <>
                 <MdCreate /> Editar evento
               </>
