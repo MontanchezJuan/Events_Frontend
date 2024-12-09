@@ -29,7 +29,6 @@ export const EventForm = ({ initialValues }: EventFormProps) => {
   const [inputCategory, setInputCategory] = useState<string>("");
   const [inputRestriction, setInputRestriction] = useState<string>("");
 
-  console.log(initialValues);
 
   const navigate = useNavigate();
 
