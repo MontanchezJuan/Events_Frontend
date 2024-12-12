@@ -50,6 +50,7 @@ export const EventsFilterForm = ({
           date: data.date
             ? new Date(parseDate(data.date)).toLocaleDateString()
             : "",
+          is_active: true,
         },
         setState: setIsLoading,
       }),

@@ -9,6 +9,7 @@ export enum ORGANIZERROUTES {
   INSCRIPTIONS = "/list-inscriptions/:idEvent",
   MY_PROFILE = "/my-profile",
   NOTIFICATIONS = "/send-notifications/:idEvent",
+  ONE = "/list-event/:id?",
 }
 
 // Here are routes to organizer role
@@ -41,5 +42,9 @@ export const OrganizerRoutes: Route[] = [
   {
     component: lazy(() => import("../pages/common/SendNotificationPage")),
     path: ORGANIZERROUTES.NOTIFICATIONS,
+  },
+  {
+    component: lazy(() => import("../pages/common/ViewEventPage")),
+    path: ORGANIZERROUTES.ONE,
   },
 ];

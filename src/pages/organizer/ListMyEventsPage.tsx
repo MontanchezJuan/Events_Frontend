@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { MdCreate, MdDelete, MdNotifications, MdPeople } from "react-icons/md";
+import {
+  MdCreate,
+  MdDelete,
+  MdNotifications,
+  MdPeople,
+  MdVisibility,
+} from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { Event } from "../../api/interfaces/event";
@@ -130,6 +136,17 @@ export default function ListMyEventsPage() {
             render={({ _id, organizer_id }) =>
               organizer_id === id && (
                 <div className="flex min-h-full items-center justify-center gap-2">
+                  <TableButton
+                    color="green"
+                    onClick={() => navigate(`/list-event/${_id}`)}
+                    rounded
+                    data-tooltip-id={`one-${_id}`}
+                  >
+                    <MdVisibility />
+                    <Tooltip id={`one-${_id}`} place="top">
+                      Visualizar {singular}
+                    </Tooltip>
+                  </TableButton>
                   <TableButton
                     color="yellow"
                     onClick={() => navigate(`/send-notifications/${_id}`)}

@@ -16,7 +16,10 @@ export default function LandingPage() {
 
   useEffect(() => {
     const get_events = async () => {
-      const eventList = await list_events({ setState: setIsLoading });
+      const eventList = await list_events({
+        params: { is_active: true },
+        setState: setIsLoading,
+      });
 
       setEvents(eventList);
     };

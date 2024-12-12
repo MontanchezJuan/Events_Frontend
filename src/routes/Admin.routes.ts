@@ -9,6 +9,7 @@ export enum ADMINROUTES {
   INSCRIPTIONS = "/list-inscriptions/:idEvent",
   MY_PROFILE = "/my-profile",
   NOTIFICATIONS = "/send-notifications/:idEvent",
+  ONE = "/list-event/:id?",
   PERMISSION = "/permission/:id?",
   PERMISSIONS = "/list-permissions",
   PROFILE = "/profile/:id?",
@@ -49,6 +50,10 @@ export const AdminRoutes: Route[] = [
   {
     component: lazy(() => import("../pages/common/SendNotificationPage")),
     path: ADMINROUTES.NOTIFICATIONS,
+  },
+  {
+    component: lazy(() => import("../pages/common/ViewEventPage")),
+    path: ADMINROUTES.ONE,
   },
   {
     component: lazy(() => import("../pages/admin/PermissionPage")),

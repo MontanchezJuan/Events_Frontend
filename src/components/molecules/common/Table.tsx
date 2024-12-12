@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
+import { NotData } from "../../atoms/common/NotData";
 import { ColumnProps, TableColumn } from "../../atoms/common/TableColumn";
 
 interface TableProps<T> {
@@ -73,11 +74,7 @@ export const Table = <T extends { [key: string]: any }>({
           </tbody>
         </table>
       ) : (
-        <div className="flex flex-col items-center bg-[#00ff66]">
-          <p className="my-4 text-center text-3xl font-semibold">
-            Actualmente no hay información para mostrar
-          </p>
-        </div>
+        <NotData />
       )}
     </div>
   );

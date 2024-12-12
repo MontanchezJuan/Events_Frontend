@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { MdOutlinePeople } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import { Event } from "../../api/interfaces/event";
 import { UserEvent } from "../../api/interfaces/user";
-import { list_events_users } from "../../api/services/eventsService";
+import {
+  change_status_event,
+  event_by_id,
+  list_events_users,
+} from "../../api/services/eventsService";
 import { update_inscription } from "../../api/services/inscriptionsService";
+import {
+  PrimaryButton,
+  SecondaryButton,
+} from "../../components/atoms/common/Button";
 import { GoBack } from "../../components/atoms/common/GoBack";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
 import { TableColumn } from "../../components/atoms/common/TableColumn";
@@ -17,7 +26,9 @@ interface RouteParams extends Record<string, string | undefined> {
 
 export default function ListInscriptionsPage() {
   const [inscriptions, setInscriptions] = useState<UserEvent[]>([]);
+  const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading1, setIsLoading1] = useState<boolean>(false);
 
   const plural = "inscripciones";
 
@@ -28,6 +39,7 @@ export default function ListInscriptionsPage() {
       setInscriptions(
         await list_events_users({ id: idEvent, setState: setIsLoading }),
       );
+      setEvent(await event_by_id({ id: idEvent, setState: setIsLoading }));
     }
   };
 
@@ -47,13 +59,40 @@ export default function ListInscriptionsPage() {
     }
   };
 
-  //! Buton de finalizar evento
+  const finishEvent = async () => {
+    if (idEvent) {
+      const res = await change_status_event({
+        id: idEvent,
+        setState: setIsLoading1,
+      });
+
+      if (res) {
+        Alert({
+          title: "Ok",
+          text: res,
+          icon: "success",
+        });
+      }
+    }
+  };
 
   return (
     <AdminLayout>
       <GoBack />
 
       <h1 className="text-2xl capitalize">{plural}</h1>
+
+      <LoaderComponent isLoading={isLoading1}>
+        {event?.is_active ? (
+          <SecondaryButton onClick={finishEvent} disabled={isLoading1}>
+            Finalizar evento
+          </SecondaryButton>
+        ) : (
+          <PrimaryButton onClick={finishEvent} disabled={isLoading1}>
+            Activar evento
+          </PrimaryButton>
+        )}
+      </LoaderComponent>
 
       <LoaderComponent isLoading={isLoading}>
         <Table<UserEvent>
@@ -104,6 +143,7 @@ export default function ListInscriptionsPage() {
             render={({ participated, inscription_id }) => (
               <input
                 type="checkbox"
+                disabled={!event?.is_active}
                 defaultChecked={participated}
                 onChange={() => handleInscription(inscription_id)}
               />

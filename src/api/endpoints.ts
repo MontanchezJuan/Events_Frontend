@@ -29,12 +29,19 @@ export const EVENT_ENDPOINTS = {
   LIST_MY_EVENTS: "/events/list-events/",
   EVENT: "/events/",
   CREATE_EVENT: "/events/create",
+  CHANGE_STATUS: "/events/change_status/",
 };
 
 export const INSCRIPTIONS_ENDPOINTS = {
   LIST_INSCRIPTIONS: "/inscriptions/list",
   INSCRIPTION: "/inscriptions/",
   CREATE_INSCRIPTION: "/inscriptions/create",
+};
+
+export const FEEDBACKS_ENDPOINTS = {
+  LIST_FEEDBACKS: "/feedbacks/list",
+  FEEDBACK: "/feedbacks/",
+  CREATE_FEEDBACK: "/feedbacks/create",
 };
 
 export const CERTIFICATES_ENDPOINTS = {
