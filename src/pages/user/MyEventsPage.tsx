@@ -10,6 +10,7 @@ import {
   SecondaryButton,
 } from "../../components/atoms/common/Button";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
+import { NotData } from "../../components/atoms/common/NotData";
 import MainLayout from "../../components/templates/MainLayout";
 import { Alert } from "../../utils/swal";
 
@@ -46,7 +47,7 @@ export default function MyEventsPage() {
 
   useEffect(() => {
     fetchEvent();
-  }, []);
+  }, [date]);
 
   const navigateHome = () => {
     navigate("/");
@@ -142,32 +143,30 @@ export default function MyEventsPage() {
                             <MdVisibility /> Visualizar evento
                           </LoaderComponent>
                         </PrimaryButton>
-
-                        <SecondaryButton
-                          disabled={isLoadingButton}
-                          onClick={() =>
-                            event.inscription_id &&
-                            handleUnsuscribe(event.inscription_id, event.name)
-                          }
-                        >
-                          <LoaderComponent isLoading={isLoadingButton}>
-                            Cancelar inscripción
-                          </LoaderComponent>
-                        </SecondaryButton>
+                        {event.is_active && (
+                          <SecondaryButton
+                            disabled={isLoadingButton}
+                            onClick={() =>
+                              event.inscription_id &&
+                              handleUnsuscribe(event.inscription_id, event.name)
+                            }
+                          >
+                            <LoaderComponent isLoading={isLoadingButton}>
+                              Cancelar inscripción
+                            </LoaderComponent>
+                          </SecondaryButton>
+                        )}
                       </div>
                     </div>
                   ),
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-4">
-              <p className="my-4 text-center text-3xl font-semibold">
-                Actualmente no hay información para mostrar
-              </p>
+            <NotData>
               <PrimaryButton onClick={navigateHome}>
                 <MdSearch /> Encontrar eventos
               </PrimaryButton>
-            </div>
+            </NotData>
           )}
         </LoaderComponent>
       </div>

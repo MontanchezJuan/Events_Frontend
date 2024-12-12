@@ -10,24 +10,19 @@ import {
 } from "react-icons/md";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Event } from "../../api/interfaces/event";
+import { FeedBack } from "../../api/interfaces/feedback";
 import { Inscription } from "../../api/interfaces/inscription";
 import { event_by_id } from "../../api/services/eventsService";
-import {
-  create_inscription,
-  delete_inscription,
-  list_inscriptions,
-} from "../../api/services/inscriptionsService";
-import {
-  ButtonBorder,
-  PrimaryButton,
-  SecondaryButton,
-} from "../../components/atoms/common/Button";
-import { Loader } from "../../components/atoms/common/Loader";
+import { list_feedbacks } from "../../api/services/feedbacksService";
+import { list_inscriptions } from "../../api/services/inscriptionsService";
+import { PrimaryButton } from "../../components/atoms/common/Button";
+import { GoBack } from "../../components/atoms/common/GoBack";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
+import { FeedbackCard } from "../../components/molecules/cards/FeedbackCard";
+import { InscriptionButton } from "../../components/molecules/common/InscriptionButton";
 import AdminLayout from "../../components/templates/AdminLayout";
 import MainLayout from "../../components/templates/MainLayout";
 import useStore from "../../store/useStore";
-import { Alert } from "../../utils/swal";
 
 interface RouteParams extends Record<string, string | undefined> {
   id: string;
@@ -38,6 +33,8 @@ export default function ViewEventPage() {
   const [hasInscription, setHasInscription] = useState<Inscription[] | null>(
     null,
   );
+  const [hasFeedback, setHasFeedback] = useState<FeedBack[] | []>([]);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
@@ -47,6 +44,17 @@ export default function ViewEventPage() {
   const navigate = useNavigate();
 
   const { id } = useParams<RouteParams>();
+
+  const get_feedback = async () => {
+    if (event && event._id) {
+      setHasFeedback(
+        await list_feedbacks({
+          params: { event_id: event._id, user_id },
+          setState: setIsLoadingButton,
+        }),
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -60,6 +68,7 @@ export default function ViewEventPage() {
 
   useEffect(() => {
     confirmIsSuscribed();
+    get_feedback();
   }, [event]);
 
   const confirmIsSuscribed = async () => {
@@ -70,60 +79,6 @@ export default function ViewEventPage() {
           params: { user_id, event_id: event._id },
         }),
       );
-    }
-  };
-
-  const handleSuscribe = async () => {
-    if (localStorage.getItem("token") && event) {
-      const inscription = await create_inscription({
-        newData: { event_id: event._id, user_id },
-        setState: setIsLoadingButton,
-      });
-      confirmIsSuscribed();
-      if (inscription) {
-        Alert({
-          title: "Ok",
-          text: inscription.message,
-          icon: "success",
-        });
-      }
-    } else {
-      localStorage.setItem("last-route", "");
-    }
-  };
-
-  const handleUnsuscribe = async () => {
-    if (event) {
-      Alert({
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Sí, cancelar la suscripción",
-        icon: "question",
-        showCancelButton: true,
-        text: `Estás seguro que deseas cancelar la suscripción en el evento: ${event.name}`,
-        title: "Alerta",
-      }).then(({ isConfirmed }) => {
-        if (isConfirmed) {
-          if (localStorage.getItem("token") && hasInscription) {
-            const resquest = async () => {
-              const message = await delete_inscription({
-                id: hasInscription[0]._id,
-                setState: setIsLoadingButton,
-              });
-              confirmIsSuscribed();
-              if (message) {
-                Alert({
-                  title: "Ok",
-                  text: message,
-                  icon: "success",
-                });
-              }
-            };
-            resquest();
-          } else {
-            localStorage.setItem("last-route", "");
-          }
-        }
-      });
     }
   };
 
@@ -193,28 +148,17 @@ export default function ViewEventPage() {
                   </Item>
                 )}
               </div>
-              {hasInscription === null ? (
-                <ButtonBorder>
-                  <Loader size={40} />
-                </ButtonBorder>
-              ) : hasInscription.length === 0 ? (
-                <PrimaryButton
-                  disabled={isLoadingButton}
-                  onClick={handleSuscribe}
-                >
-                  <LoaderComponent isLoading={isLoadingButton}>
-                    Inscribirme
-                  </LoaderComponent>
-                </PrimaryButton>
-              ) : (
-                <SecondaryButton
-                  disabled={isLoadingButton}
-                  onClick={handleUnsuscribe}
-                >
-                  <LoaderComponent isLoading={isLoadingButton}>
-                    Cancelar inscripción
-                  </LoaderComponent>
-                </SecondaryButton>
+
+              {role === "user" && (
+                <InscriptionButton
+                  event={event}
+                  hasInscription={hasInscription}
+                  hasFeedback={hasFeedback}
+                  isLoadingButton={isLoadingButton}
+                  setIsLoadingButton={setIsLoadingButton}
+                  confirmIsSuscribed={confirmIsSuscribed}
+                  get_feedback={get_feedback}
+                />
               )}
             </div>
           </section>
@@ -247,7 +191,19 @@ export default function ViewEventPage() {
       return (
         <AdminLayout>
           <LoaderComponent isLoading={isLoading}>
+            <GoBack />
             <ViewEvent />
+            <FeedbackCard event_id={event?._id} />
+          </LoaderComponent>
+        </AdminLayout>
+      );
+    case "organizer":
+      return (
+        <AdminLayout>
+          <LoaderComponent isLoading={isLoading}>
+            <GoBack />
+            <ViewEvent />
+            <FeedbackCard event_id={event?._id} />
           </LoaderComponent>
         </AdminLayout>
       );

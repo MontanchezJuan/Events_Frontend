@@ -12,11 +12,12 @@ export const list_events = async ({
   setState,
 }: {
   params?: {
-    name?: string;
     categories?: string;
-    site?: string;
     date?: string;
+    is_active?: boolean;
+    name?: string;
     organizer_id?: string;
+    site?: string;
   };
   setState: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<Event[] | []> => {
@@ -187,6 +188,30 @@ export const update_event = async ({
     const errorMessage = e.response?.data?.message || "Algo salió mal";
     Alert({ text: errorMessage });
     console.error("Error al actualizar un evento:", e);
+    return null;
+  } finally {
+    setState(false);
+  }
+};
+
+export const change_status_event = async ({
+  id,
+  setState,
+}: {
+  id: string;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+}): Promise<string | null> => {
+  try {
+    setState(true);
+    const { data } = await axiosBusiness.put<ResponseData<null>>(
+      `${EVENT_ENDPOINTS.CHANGE_STATUS}${id}`,
+    );
+
+    return data?.message || null;
+  } catch (e: any) {
+    const errorMessage = e.response?.data?.message || "Algo salió mal";
+    Alert({ text: errorMessage });
+    console.error("Error al cambiar el estado de un evento:", e);
     return null;
   } finally {
     setState(false);

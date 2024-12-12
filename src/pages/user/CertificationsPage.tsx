@@ -6,6 +6,7 @@ import { generate_certificate } from "../../api/services/certificatesService";
 import { list_my_events } from "../../api/services/eventsService";
 import { PrimaryButton } from "../../components/atoms/common/Button";
 import { LoaderComponent } from "../../components/atoms/common/LoaderComponent";
+import { NotData } from "../../components/atoms/common/NotData";
 import MainLayout from "../../components/templates/MainLayout";
 
 export default function CertificationsPage() {
@@ -96,14 +97,11 @@ export default function CertificationsPage() {
                 )}
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-4">
-                <p className="my-4 text-center text-3xl font-semibold">
-                  Actualmente no hay información para mostrar
-                </p>
+              <NotData>
                 <PrimaryButton onClick={navigateHome}>
                   <MdSearch /> Encontrar eventos
                 </PrimaryButton>
-              </div>
+              </NotData>
             )}
           </LoaderComponent>
         </div>
